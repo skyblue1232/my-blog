@@ -1,14 +1,22 @@
 const ALL_POSTS = [
   {
     id:1,
-    title:'React 상태관리 Recoil 개념 정리 (Atom · Selector 이해하기)',
+    title:'프로젝트를 위한 Github Flow 이해와 브랜치/라벨 전략',
+    desc:'Github Flow의 개념과 브랜치 전략, 그리고 프로젝트 관리에 도움이 되는 라벨 분류 방법을 정리했습니다.',
+    tags:['Git','Github','Workflow', 'Branch Strategy', 'Collaboration'],
+    date:'2024.09.27',
+    url:'posts/git-flow.html',
+  },
+  {
+    id:2,
+    title:'Recoil로 React 상태 관리 쉽게 하기',
     desc:'Redux와 MobX 등 상태관리 라이브러리를 간단히 비교하고 Recoil의 핵심 개념인 Atom과 Selector를 이해하기 쉽게 정리했습니다.',
     tags:['React','State','Recoil'],
     date:'2024.11.15',
     url:'posts/recoil.html',
   },
   {
-    id:2,
+    id:3,
     title:'Zustand로 React 상태 관리 쉽게 하기',
     desc:'Redux보다 훨씬 간단한 상태 관리 라이브러리 Zustand의 기본 개념과 store 생성, Devtools, persist, Immer 활용 방법까지 정리했습니다.',
     tags:['React','Zustand','State'],
@@ -16,7 +24,7 @@ const ALL_POSTS = [
     url:'posts/zustand.html',
   },
   {
-    id:3,
+    id:4,
     title:'CORS와 SOP 완벽 이해하기',
     desc:'브라우저 보안 정책인 CORS와 SOP의 개념과 동작 방식을 쉽게 설명합니다.',
     tags:['Web','HTTP','Security','CORS'],
@@ -24,7 +32,7 @@ const ALL_POSTS = [
     url:'posts/cors.html',
   },
   {
-    id:4,
+    id:5,
     title:'공용 컴포넌트 설계 방법 정리 (Frontend Fundamentals)',
     desc:'변경하기 쉬운 프론트엔드 코드를 만들기 위한 가독성, 예측 가능성, 응집도, 결합도 기준을 정리했습니다.',
     tags:['Frontend','Architecture'],
@@ -32,13 +40,14 @@ const ALL_POSTS = [
     url:'posts/frontend-fundamentals.html',
   },
   {
-    id:5,
+    id:6,
     title:'CSR, SSR, SSG, ISR 렌더링 방식 비교',
     desc:'각 렌더링 방식의 개념과 특징, 그리고 사용 사례를 정리했습니다.',
     tags:['Frontend', 'Web', 'React', 'Next.js', 'Rendering'],
     date:'2025.02.10',
     url:'posts/csr-ssr-ssg-isr.html',
   },
+
   {
     id:10,
     title:'AWS CloudFront로 정적 웹사이트 빠르게 배포하기',
