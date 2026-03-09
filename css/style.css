@@ -132,6 +132,7 @@ main {
     border-radius:50%;
     object-fit:cover;
     object-position:center 10%;
+    transform:scale(0.9);
 }
 .home-greeting {
     font-size: 0.85rem;
