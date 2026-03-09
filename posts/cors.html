@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>CORS와 SOP 완벽 이해하기</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+<link rel="stylesheet" href="../css/style.css"/>
+
+</head>
+
+<body>
+
+<header id="header">
+<nav>
+<div class="nav-logo" onclick="location.href='../index.html'">
+My Blog
+</div>
+</nav>
+</header>
+
+
+<main class="post-container">
+
+<div class="post-header">
+
+<div class="post-tags">
+<span class="tag">Web</span>
+<span class="tag">HTTP</span>
+<span class="tag">Security</span>
+<span class="tag">CORS</span>
+</div>
+
+<h1 class="post-title">
+CORS와 SOP 이해하기 (왜 CORS 에러가 발생할까?)
+</h1>
+
+<div class="post-meta">
+<span>2025.01.31</span>
+</div>
+
+</div>
+
+
+<article class="post-content">
+
+
+<p>
+프론트엔드 개발을 하다 보면 API 요청을 보낼 때
+다음과 같은 에러를 자주 보게 됩니다.
+</p>
+
+<pre><code>
+Access to fetch at 'https://api.example.com'
+from origin 'http://localhost:3000'
+has been blocked by CORS policy
+</code></pre>
+
+<p>
+이 에러의 원인은 바로 <strong>CORS</strong>와
+<strong>SOP (Same-Origin Policy)</strong> 때문입니다.
+</p>
+
+<p>
+이 글에서는
+</p>
+
+<ul>
+<li>SOP가 무엇인지</li>
+<li>CORS는 왜 필요한지</li>
+<li>CORS는 어떻게 동작하는지</li>
+</ul>
+
+를 이해하기 쉽게 정리합니다.
+
+---
+
+<h2>1. Origin (출처)</h2>
+
+<p>
+웹에서 <strong>출처(Origin)</strong>는 다음 세 가지 요소로 구성됩니다.
+</p>
+
+<ul>
+<li>Protocol (프로토콜)</li>
+<li>Host (도메인)</li>
+<li>Port (포트)</li>
+</ul>
+
+<pre><code>
+https://example.com:3000
+</code></pre>
+
+<table>
+<tr>
+<td>Protocol</td>
+<td>https</td>
+</tr>
+<tr>
+<td>Host</td>
+<td>example.com</td>
+</tr>
+<tr>
+<td>Port</td>
+<td>3000</td>
+</tr>
+</table>
+
+<p>
+이 세 요소가 모두 동일해야 <strong>동일 출처</strong>입니다.
+</p>
+
+<pre><code>
+console.log(location.origin)
+</code></pre>
+
+---
+
+<h2>2. SOP (Same-Origin Policy)</h2>
+
+<p>
+<strong>SOP는 동일 출처 정책</strong>입니다.
+</p>
+
+<p>
+브라우저는 보안을 위해
+<strong>다른 출처의 리소스 접근을 기본적으로 차단</strong>합니다.
+</p>
+
+<p>
+예를 들어
+</p>
+
+<pre><code>
+Frontend
+http://localhost:3000
+
+Backend
+https://api.example.com
+</code></pre>
+
+<p>
+이 두 서버는 <strong>출처가 다르기 때문에</strong>
+브라우저는 요청을 차단합니다.
+</p>
+
+<p>
+이 정책이 존재하는 이유는
+악성 스크립트가 다른 사이트의 데이터를
+몰래 가져가는 것을 방지하기 위함입니다.
+</p>
+
+<p>
+중요한 점은
+</p>
+
+<p>
+<strong>SOP 검사는 서버가 아니라 브라우저가 수행합니다.</strong>
+</p>
+
+---
+
+<h2>3. CORS (Cross-Origin Resource Sharing)</h2>
+
+<p>
+CORS는 <strong>다른 출처의 리소스를 허용하기 위한 규칙</strong>입니다.
+</p>
+
+<p>
+즉,
+</p>
+
+<p>
+<strong>SOP 정책을 유지하면서 특정 요청만 허용하는 방법</strong>입니다.
+</p>
+
+<p>
+동작 방식은 다음과 같습니다.
+</p>
+
+<ol>
+<li>브라우저가 요청을 보냄 (Origin 포함)</li>
+<li>서버가 응답 헤더에 허용 Origin을 포함</li>
+<li>브라우저가 허용 여부 확인</li>
+</ol>
+
+<pre><code>
+Access-Control-Allow-Origin
+</code></pre>
+
+예
+
+<pre><code>
+Access-Control-Allow-Origin: https://example.com
+</code></pre>
+
+또는
+
+<pre><code>
+Access-Control-Allow-Origin: *
+</code></pre>
+
+---
+
+<h2>4. CORS 동작 방식</h2>
+
+CORS 요청은 크게 3가지 방식으로 동작합니다.
+
+---
+
+<h3>1. Preflight Request</h3>
+
+<p>
+브라우저는 실제 요청 전에
+<strong>OPTIONS 요청을 먼저 보내 서버 허용 여부를 확인</strong>합니다.
+</p>
+
+<pre><code>
+OPTIONS /api/users
+</code></pre>
+
+이 요청을 <strong>Preflight 요청</strong>이라고 합니다.
+
+<p>
+이 방식은 보안을 강화하지만
+추가 요청이 발생하기 때문에 성능에 영향을 줄 수 있습니다.
+</p>
+
+---
+
+<h3>2. Simple Request</h3>
+
+<p>
+특정 조건을 만족하면
+Preflight 요청 없이 바로 요청을 보냅니다.
+</p>
+
+조건:
+
+<ul>
+<li>GET / POST / HEAD 메소드</li>
+<li>특정 Content-Type</li>
+<li>특정 헤더만 사용</li>
+</ul>
+
+하지만 실제 API 요청 대부분은
+<strong>Preflight 요청이 발생합니다.</strong>
+
+---
+
+<h3>3. Credentialed Request</h3>
+
+<p>
+쿠키나 인증 토큰을 포함하는 요청입니다.
+</p>
+
+예
+
+<pre><code>
+fetch("https://example.com/api", {
+credentials: "include"
+})
+</code></pre>
+
+axios
+
+<pre><code>
+axios.get("/api", {
+withCredentials: true
+})
+</code></pre>
+
+이 경우 서버도 다음 헤더를 설정해야 합니다.
+
+<pre><code>
+Access-Control-Allow-Credentials: true
+</code></pre>
+
+그리고 중요한 점은
+
+<p>
+<strong>Credential 요청에서는 Access-Control-Allow-Origin에 "*"를 사용할 수 없습니다.</strong>
+</p>
+
+---
+
+<h2>5. CORS 해결 방법</h2>
+
+가장 올바른 해결 방법은
+<strong>서버에서 CORS 설정을 하는 것</strong>입니다.
+
+예 (Express)
+
+<pre><code>
+const cors = require("cors")
+
+app.use(cors({
+origin: "http://localhost:3000",
+credentials: true
+}))
+</code></pre>
+
+Spring
+
+<pre><code>
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+
+@Override
+public void addCorsMappings(CorsRegistry registry) {
+registry.addMapping("/**")
+.allowedOrigins("http://localhost:3000")
+.allowedMethods("GET","POST")
+.allowCredentials(true);
+}
+}
+</code></pre>
+
+---
+
+<h2>6. 개발 환경에서 임시 해결 방법</h2>
+
+다음 방법들은 **개발 환경에서만 사용해야 합니다.**
+
+<ul>
+<li>프록시 서버 사용</li>
+<li>Chrome CORS 확장 프로그램</li>
+<li>API Gateway 사용</li>
+</ul>
+
+하지만
+<strong>실제 서비스에서는 반드시 서버에서 CORS를 설정해야 합니다.</strong>
+
+---
+
+<h2>정리</h2>
+
+<ul>
+<li>SOP는 보안을 위해 다른 출처 요청을 차단한다</li>
+<li>CORS는 특정 요청을 허용하기 위한 규칙이다</li>
+<li>CORS 검사는 브라우저가 수행한다</li>
+<li>해결은 서버 설정이 필요하다</li>
+</ul>
+
+<p>
+CORS 에러는 단순한 에러가 아니라
+웹 보안을 위한 중요한 정책입니다.
+</p>
+
+</article>
+
+</main>
+
+</body>
+</html>

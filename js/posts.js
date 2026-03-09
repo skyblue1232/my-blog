@@ -4,7 +4,7 @@ const ALL_POSTS = [
     title:'React 상태관리 Recoil 개념 정리 (Atom · Selector 이해하기)',
     desc:'Redux와 MobX 등 상태관리 라이브러리를 간단히 비교하고 Recoil의 핵심 개념인 Atom과 Selector를 이해하기 쉽게 정리했습니다.',
     tags:['React','State','Recoil'],
-    date:'2025.01.08',
+    date:'2024.11.15',
     url:'posts/recoil.html',
   },
   {
@@ -14,6 +14,14 @@ const ALL_POSTS = [
     tags:['React','Zustand','State'],
     date:'2024.12.08',
     url:'posts/zustand.html',
+  },
+  {
+    id:3,
+    title:'CORS와 SOP 완벽 이해하기',
+    desc:'브라우저 보안 정책인 CORS와 SOP의 개념과 동작 방식을 쉽게 설명합니다.',
+    tags:['Web','HTTP','Security','CORS'],
+    date:'2025.01.12',
+    url:'posts/cors.html',
   },
   {
     id:10,

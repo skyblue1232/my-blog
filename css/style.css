@@ -364,6 +364,22 @@ main {
   margin-bottom:6px;
 }
 
+.post-image {
+margin:40px 0;
+text-align:center;
+}
+
+.post-image img {
+max-width:100%;
+border-radius:10px;
+}
+
+.image-caption{
+font-size:14px;
+color:#666;
+margin-top:8px;
+}
+
 /* ── SKELETON ── */
 .skeleton {
     background: linear-gradient(90deg, #f0f4ff 25%, #e4ecff 50%, #f0f4ff 75%);
