@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Zustand로 React 상태 관리 쉽게 하기</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+<link rel="stylesheet" href="../css/style.css"/>
+<link rel="stylesheet" href="../css/post.css"/>
+
+</head>
+
+<body>
+
+<header id="header">
+<nav>
+<div class="nav-logo" onclick="location.href='../index.html'">My Blog</div>
+</nav>
+</header>
+
+<main class="post-container">
+
+<h1 class="post-title">Zustand로 React 상태 관리 쉽게 하기</h1>
+
+<div class="post-meta">
+2024.12.08 · min
+</div>
+
+<div class="post-content">
+
+<p>
+React에서 상태 관리를 할 때 Redux, Context API 등 다양한 방법이 존재합니다.
+그 중 <strong>Zustand</strong>는 매우 단순한 구조와 적은 보일러플레이트로
+전역 상태를 관리할 수 있는 라이브러리입니다.
+</p>
+
+<h2>Zustand란 무엇인가</h2>
+
+<p>
+Zustand는 독일어로 <strong>"상태"</strong>라는 의미를 가지고 있습니다.
+React 애플리케이션에서 전역 상태를 관리하기 위한 라이브러리이며
+간단한 API와 직관적인 구조가 특징입니다.
+</p>
+
+<h3>장점</h3>
+
+<ul>
+<li>매우 단순한 API</li>
+<li>보일러플레이트 코드가 거의 없음</li>
+<li>Redux Devtools 지원</li>
+<li>Hook 기반 사용 방식</li>
+<li>가벼운 번들 크기</li>
+</ul>
+
+<h2>Zustand 설치</h2>
+
+<pre><code>npm install zustand</code></pre>
+
+<h2>Store 생성</h2>
+
+<pre><code>import { create } from 'zustand'
+
+const useStore = create(set =&gt; ({
+  bears: 0,
+
+  increasePopulation: () =&gt;
+    set(state =&gt; ({ bears: state.bears + 1 })),
+
+  removeAllBears: () =&gt;
+    set({ bears: 0 })
+}))
+</code></pre>
+
+<h2>컴포넌트에서 사용하기</h2>
+
+<pre><code>import useStore from './store'
+
+const App = () =&gt; {
+
+  const { bears, increasePopulation, removeAllBears } =
+    useStore(state =&gt; state)
+
+  return (
+    &lt;&gt;
+      &lt;h1&gt;{bears} around here ...&lt;/h1&gt;
+
+      &lt;button onClick={increasePopulation}&gt;
+        one up
+      &lt;/button&gt;
+
+      &lt;button onClick={removeAllBears}&gt;
+        remove all
+      &lt;/button&gt;
+    &lt;/&gt;
+  )
+}
+</code></pre>
+
+<h2>Redux Devtools 사용하기</h2>
+
+<pre><code>import { create } from 'zustand'
+import { devtools } from 'zustand/middleware'
+
+const store = (set) =&gt; ({
+  bears: 0,
+  increasePopulation: () =&gt; set(state =&gt; ({ bears: state.bears + 1 })),
+  removeAllBears: () =&gt; set({ bears: 0 })
+})
+
+const useStore = create(devtools(store))
+</code></pre>
+
+<h2>Production 환경 분기</h2>
+
+<pre><code>const useStore = create(
+  process.env.NODE_ENV !== 'production'
+    ? devtools(store)
+    : store
+)
+</code></pre>
+
+<h2>Zustand 활용 팁</h2>
+
+<h3>1. 상태 일부만 업데이트</h3>
+
+<pre><code>const useStore = create((set) =&gt; ({
+  bears: 0,
+  trees: 10,
+
+  addTree: () =&gt; set(state =&gt; ({
+    trees: state.trees + 1
+  })),
+
+  reset: () =&gt; set({
+    bears: 0,
+    trees: 10
+  })
+}))
+</code></pre>
+
+<h3>2. Selector로 리렌더링 최적화</h3>
+
+<pre><code>const BearCount = () =&gt; {
+  const bears = useStore(state =&gt; state.bears)
+  return &lt;h1&gt;{bears}&lt;/h1&gt;
+}
+</code></pre>
+
+<h3>3. persist 미들웨어</h3>
+
+<pre><code>import { persist } from 'zustand/middleware'
+
+const useStore = create(
+  persist(
+    (set) =&gt; ({
+      bears: 0,
+      increasePopulation: () =&gt;
+        set(state =&gt; ({ bears: state.bears + 1 })),
+      removeAllBears: () =&gt; set({ bears: 0 })
+    }),
+    { name: 'bear-storage' }
+  )
+)
+</code></pre>
+
+<h3>4. Immer 사용</h3>
+
+<pre><code>import { immer } from 'zustand/middleware/immer'
+
+const useStore = create(
+  immer((set) =&gt; ({
+    bears: 0,
+
+    increasePopulation: () =&gt;
+      set(state =&gt; { state.bears += 1 }),
+
+    removeAllBears: () =&gt;
+      set(state =&gt; { state.bears = 0 })
+  }))
+)
+</code></pre>
+
+<h3>5. 비동기 작업 처리</h3>
+
+<pre><code>const useStore = create((set) =&gt; ({
+  bears: 0,
+
+  fetchBears: async () =&gt; {
+    const res = await fetch('/api/bears')
+    const data = await res.json()
+    set({ bears: data.count })
+  }
+}))
+</code></pre>
+
+<h3>6. 여러 store 사용</h3>
+
+<pre><code>// userStore.js
+const useUserStore = create(set =&gt; ({
+  user: null,
+  setUser: (user) =&gt; set({ user })
+}))
+
+// themeStore.js
+const useThemeStore = create(set =&gt; ({
+  theme: 'light',
+  toggleTheme: () =&gt;
+    set(state =&gt; ({
+      theme: state.theme === 'light' ? 'dark' : 'light'
+    }))
+}))
+</code></pre>
+
+<h3>7. TypeScript 사용</h3>
+
+<pre><code>interface BearState {
+  bears: number
+  increasePopulation: () =&gt; void
+  removeAllBears: () =&gt; void
+}
+</code></pre>
+
+<h3>8. Devtools + Immer</h3>
+
+<pre><code>const useStore = create(
+  devtools(
+    immer((set) =&gt; ({
+      bears: 0,
+      increasePopulation: () =&gt;
+        set(state =&gt; { state.bears += 1 })
+    }))
+  )
+)
+</code></pre>
+
+<h2>마무리</h2>
+
+<p>
+Zustand는 단순하면서도 강력한 상태 관리 라이브러리입니다.
+Redux보다 훨씬 적은 코드로 전역 상태를 관리할 수 있으며
+필요에 따라 다양한 미들웨어와 함께 확장할 수 있습니다.
+</p>
+
+</div>
+</main>
+
+</body>
+</html>
