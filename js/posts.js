@@ -36,7 +36,7 @@ const ALL_POSTS = [
     title:'CSR, SSR, SSG, ISR 렌더링 방식 비교',
     desc:'각 렌더링 방식의 개념과 특징, 그리고 사용 사례를 정리했습니다.',
     tags:['Frontend', 'React', 'Next.js', 'Rendering'],
-    date:'2025.02.05',
+    date:'2025.02.10',
     url:'posts/csr-ssr-ssg-isr.html',
   },
 ];
