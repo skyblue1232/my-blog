@@ -128,8 +128,10 @@ main {
 }
 .hero-profile{
     width:180px;
-    height:auto;
+    height:180px;
     border-radius:50%;
+    object-fit:cover;
+    object-position:top;
 }
 .home-greeting {
     font-size: 0.85rem;
