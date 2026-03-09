@@ -110,10 +110,29 @@ main {
 
 /* ── HOME ── */
 .home-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 80px;
+
     padding: 56px 0 48px;
     border-bottom: 1px solid var(--border);
     margin-bottom: 48px;
     animation: fadeUp 0.5s 0.05s both;
+}
+.hero-left{
+    flex:1;
+}
+.hero-right{
+    flex-shrink:0;
+}
+.hero-profile{
+    width:300px;
+    height:400px;
+    object-fit:cover;
+    border-radius:50%;
+    border:4px solid var(--primary-light);
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
 }
 .home-greeting {
     font-size: 0.85rem;
