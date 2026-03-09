@@ -25,18 +25,18 @@ const ALL_POSTS = [
   },
   {
     id:4,
-    title:'CSR, SSR, SSG, ISR 렌더링 방식 비교',
-    desc:'각 렌더링 방식의 개념과 특징, 그리고 사용 사례를 정리했습니다.',
-    tags:['Frontend', 'Web','React', 'Next.js', 'Rendering'],
-    date:'2025.02.05',
-    url:'posts/csr-ssr-ssg-isr.html',
-  },
-  {
-    id:10,
     title:'공용 컴포넌트 설계 방법 정리 (Frontend Fundamentals)',
     desc:'변경하기 쉬운 프론트엔드 코드를 만들기 위한 가독성, 예측 가능성, 응집도, 결합도 기준을 정리했습니다.',
     tags:['Frontend','Architecture'],
     date:'2025.01.29',
     url:'posts/frontend-fundamentals.html',
+  },
+  {
+    id:5,
+    title:'CSR, SSR, SSG, ISR 렌더링 방식 비교',
+    desc:'각 렌더링 방식의 개념과 특징, 그리고 사용 사례를 정리했습니다.',
+    tags:['Frontend', 'React', 'Next.js', 'Rendering'],
+    date:'2025.02.05',
+    url:'posts/csr-ssr-ssg-isr.html',
   },
 ];
