@@ -1,3 +1,5 @@
+ALL_POSTS.sort((a, b) => new Date(b.date) - new Date(a.date));
+
 const PAGE_SIZE = 4;
 let currentFilter = 'All';
 let loadedCount = 0;
