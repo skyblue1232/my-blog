@@ -206,6 +206,39 @@ const sentinelObs = new IntersectionObserver((entries) => {
 }, { rootMargin: '200px' });
 sentinelObs.observe(sentinel);
 
+function updateStats(){
+
+  // Posts
+  const postCount = ALL_POSTS.length;
+
+  // Topics (unique tags)
+  const tagSet = new Set();
+  ALL_POSTS.forEach(p=>{
+    p.tags.forEach(t=>tagSet.add(t));
+  });
+
+  const topicCount = tagSet.size;
+
+  document.getElementById("stat-posts").dataset.count = postCount;
+  document.getElementById("stat-topics").dataset.count = topicCount;
+
+}
+
+async function loadGithubRepos(){
+
+  try{
+    const res = await fetch("https://api.github.com/users/skyblue1232");
+    const data = await res.json();
+
+    document.getElementById("stat-repos").dataset.count =
+      data.public_repos;
+
+  }catch(e){
+    console.log("github api error");
+  }
+
+}
+
 // ── Counter animation
 function animateCounters() {
   document.querySelectorAll('[data-count]').forEach(el => {
@@ -227,5 +260,10 @@ window.addEventListener('scroll', () => {
 
 // ── Init
 renderHomePosts();
+
+updateStats();
+loadGithubRepos();
+
 setTimeout(animateCounters, 400);
+
 observeReveal();
