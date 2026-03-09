@@ -127,8 +127,8 @@ main {
     flex-shrink:0;
 }
 .hero-profile{
-    width:200px;
-    height:200px;
+    width:180px;
+    height:180px;
     border-radius:50%;
     object-fit:cover;
     object-position:center 10%;
