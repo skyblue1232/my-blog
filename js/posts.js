@@ -39,4 +39,12 @@ const ALL_POSTS = [
     date:'2025.02.10',
     url:'posts/csr-ssr-ssg-isr.html',
   },
+  {
+    id:10,
+    title:'AWS CloudFront로 정적 웹사이트 빠르게 배포하기',
+    desc:'S3에 호스팅된 정적 웹사이트를 CloudFront CDN과 ACM SSL 인증서를 활용해 빠르고 안전하게 배포하는 방법을 단계별로 설명합니다.',
+    tags:['AWS','CloudFront','CDN','S3', 'Optimization'],
+    date:'2025.08.24',
+    url:'posts/cloud-front.html',
+  }
 ];
