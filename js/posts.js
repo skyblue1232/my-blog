@@ -1,5 +1,12 @@
 const ALL_POSTS = [
-  { id:1,  title:'React 18 Concurrent Mode 완벽 정리', desc:'Concurrent Mode가 도입되면서 달라진 렌더링 방식과 실제 프로젝트에 적용하는 방법을 정리했습니다.', tags:['React','Frontend'], date:'2026.02.28', read:'6 min' },
+  {
+    id:1,
+    title:'공용 컴포넌트 설계 방법 정리 (Frontend Fundamentals)',
+    desc:'변경하기 쉬운 프론트엔드 코드를 만들기 위한 가독성, 예측 가능성, 응집도, 결합도 기준을 정리했습니다.',
+    tags:['Frontend','Architecture'],
+    date:'2025-01-29T02:45:00',
+    url:'posts/frontend-fundamentals.html',
+  },
   { id:2,  title:'TypeScript 타입 추론의 모든 것', desc:'제네릭, 조건부 타입, infer 키워드까지 — 타입스크립트가 타입을 추론하는 방식을 깊게 파고들었습니다.', tags:['TypeScript'], date:'2026.02.20', read:'8 min' },
   { id:3,  title:'Next.js App Router 마이그레이션 후기', desc:'Pages Router에서 App Router로 이전하면서 겪은 시행착오와 얻은 교훈을 공유합니다.', tags:['Next.js','React'], date:'2026.02.10', read:'10 min' },
   { id:4,  title:'Tailwind CSS를 잘 쓰는 법', desc:'유틸리티 클래스가 많아질수록 관리가 어려워집니다. 컴포넌트 설계와 함께 효율적으로 사용하는 팁입니다.', tags:['CSS','Frontend'], date:'2026.01.30', read:'5 min' },

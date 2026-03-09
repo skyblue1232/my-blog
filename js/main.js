@@ -5,20 +5,33 @@ let isLoading = false;
 
 function makeCard(post) {
   return `
-    <div class="post-card reveal" onclick="void(0)">
+    <div class="post-card reveal"
+         onclick="location.href='${post.url}'">
+
       <div class="post-card-tags">
         ${post.tags.map(t => `<span class="tag">${t}</span>`).join('')}
       </div>
-      <div class="post-card-title">${post.title}</div>
-      <div class="post-card-desc">${post.desc}</div>
+
+      <div class="post-card-title">
+        ${post.title}
+      </div>
+
+      <div class="post-card-desc">
+        ${post.desc}
+      </div>
+
       <div class="post-card-meta">
-        <span class="post-card-date">${post.date}</span>
+        <span class="post-card-date">
+          ${post.date}
+        </span>
+
         <span class="post-card-read">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          ${post.read}
+          ${calcReadTime(post.date)}
         </span>
       </div>
-    </div>`;
+
+    </div>
+  `;
 }
 
 function makeSkeleton() {
@@ -37,6 +50,38 @@ function renderHomePosts() {
   const recent = ALL_POSTS.slice(0, 5);
   container.innerHTML = recent.map(makeCard).join('');
   observeReveal();
+}
+
+function calcReadTime(dateString) {
+  const now = new Date();
+  const postDate = new Date(dateString);
+
+  const diff = now - postDate;
+
+  const minutes = Math.floor(diff / (1000 * 60));
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const months = Math.floor(days / 30);
+  const years = Math.floor(days / 365);
+
+  if (minutes < 60) {
+    return `${minutes}분 전`;
+  }
+
+  if (hours < 24) {
+    return `${hours}시간 전`;
+  }
+
+  if (days < 30) {
+    return `${days}일 전`;
+  }
+
+  if (months < 12) {
+    return `${months}개월 전`;
+  }
+
+  const remainMonths = months % 12;
+  return `${years}년 ${remainMonths}개월 전`;
 }
 
 // ── All posts with filter + skeleton pagination

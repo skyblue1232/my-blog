@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>공용 컴포넌트 설계 방법 고찰</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+<link rel="stylesheet" href="../css/style.css"/>
+
+<style>
+.post-container{
+  max-width:760px;
+  margin:120px auto 80px;
+  padding:0 20px;
+}
+
+.post-title{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:2.2rem;
+  font-weight:800;
+  margin-bottom:10px;
+}
+
+.post-meta{
+  color:#888;
+  font-size:0.9rem;
+  margin-bottom:40px;
+}
+
+.post-content h2{
+  margin-top:40px;
+  margin-bottom:10px;
+  font-size:1.4rem;
+}
+
+.post-content p{
+  line-height:1.8;
+  margin-bottom:16px;
+}
+
+.post-content ul{
+  padding-left:20px;
+  margin-bottom:20px;
+}
+
+.post-content li{
+  margin-bottom:6px;
+}
+</style>
+
+</head>
+
+<body>
+
+<header id="header">
+  <nav>
+    <div class="nav-logo" onclick="location.href='../index.html'">My Blog</div>
+  </nav>
+</header>
+
+<main class="post-container">
+
+<h1 class="post-title">공용 컴포넌트 설계 방법 고찰 (Frontend Fundamentals 정리)</h1>
+
+<div class="post-meta">
+2025.01.29 · minnote29
+</div>
+
+<div class="post-content">
+
+<p>
+공용 컴포넌트를 설계하기 위해 <strong>Frontend Fundamentals</strong> 내용을 참고했다.
+읽어보면서 프론트엔드 코드 구조를 고민할 때 유용하다고 느껴 따로 정리해보았다.
+</p>
+
+<h2>변경하기 쉬운 코드</h2>
+
+<p>
+좋은 프론트엔드 코드는 결국 <strong>변경하기 쉬운 코드</strong>라고 할 수 있다.
+서비스는 계속 변화하기 때문에 새로운 요구사항이 추가되거나
+기존 로직을 수정해야 하는 상황이 계속 발생한다.
+</p>
+
+<p>
+Frontend Fundamentals에서는 코드 변경을 쉽게 하기 위한 기준으로
+다음 네 가지 요소를 제시한다.
+</p>
+
+<ul>
+<li>가독성</li>
+<li>예측 가능성</li>
+<li>응집도</li>
+<li>결합도</li>
+</ul>
+
+<h2>1. 가독성</h2>
+
+<p>
+가독성은 코드가 얼마나 읽기 쉬운지를 의미한다.
+코드를 변경하기 위해서는 먼저 코드가 어떤 동작을 하는지
+이해할 수 있어야 한다.
+</p>
+
+<p>가독성을 높이기 위한 전략은 다음과 같다.</p>
+
+<ul>
+<li>중복 코드 지양하기</li>
+<li>맥락 줄이기</li>
+<li>복잡한 조건에 이름 붙이기</li>
+<li>매직 넘버 제거하기</li>
+<li>Top-down 방식으로 읽히는 코드 구조 만들기</li>
+</ul>
+
+<p>
+특히 매직 넘버는 코드의 의미를 파악하기 어렵게 만들기 때문에
+상수로 선언해 의미를 명확히 하는 것이 좋다.
+</p>
+
+<h2>2. 예측 가능성</h2>
+
+<p>
+예측 가능성은 다른 개발자가 함수나 컴포넌트의 동작을
+얼마나 쉽게 예상할 수 있는지를 의미한다.
+</p>
+
+<p>예측 가능성을 높이기 위한 전략은 다음과 같다.</p>
+
+<ul>
+<li>이름이 겹치지 않도록 관리하기</li>
+<li>같은 종류의 함수는 반환 타입을 통일하기</li>
+<li>숨은 로직을 드러내기</li>
+</ul>
+
+<p>
+예를 들어 API 호출 관련 훅들이 서로 다른 반환 타입을 가지면
+사용하는 입장에서 혼란이 발생할 수 있다.
+</p>
+
+<h2>3. 응집도</h2>
+
+<p>
+응집도는 함께 수정되어야 할 코드가 실제로 함께 수정되는지를 의미한다.
+</p>
+
+<p>
+특정 로직이 여러 컴포넌트에서 사용되더라도
+함께 수정되어야 하는 코드라면 하나의 구조 안에서
+관리하는 것이 좋다.
+</p>
+
+<p>응집도를 높이기 위한 전략은 다음과 같다.</p>
+
+<ul>
+<li>함께 수정되는 파일을 같은 디렉토리에 배치하기</li>
+<li>매직 넘버 제거하기</li>
+<li>폼 단위 응집도 고려하기</li>
+</ul>
+
+<p>
+폼의 경우 다음 두 가지 방식으로 응집도를 관리할 수 있다.
+</p>
+
+<ul>
+<li><strong>필드 단위 응집도</strong>: 각 입력 요소가 독립적으로 관리되는 방식</li>
+<li><strong>폼 전체 단위 응집도</strong>: 모든 검증 로직이 폼에 종속되는 방식</li>
+</ul>
+
+<h2>4. 결합도</h2>
+
+<p>
+결합도는 코드를 수정했을 때 영향을 받는 범위를 의미한다.
+영향 범위가 작을수록 코드의 예측 가능성이 높아진다.
+</p>
+
+<p>결합도를 낮추기 위한 전략은 다음과 같다.</p>
+
+<ul>
+<li>책임을 하나씩 관리하기</li>
+<li>불필요한 공통화 피하기</li>
+<li>Props Drilling 줄이기</li>
+</ul>
+
+<p>
+여러 컴포넌트에서 사용하는 로직을 무조건 공통화하는 것이
+항상 좋은 선택은 아니다.
+공통화된 코드가 많아질수록 변경 시 영향 범위가 넓어질 수 있기 때문이다.
+</p>
+
+<p>
+또한 Props Drilling은 컴포넌트 간 결합도가 높다는 신호이므로
+Composition 패턴 등을 활용해 구조를 개선할 수 있다.
+</p>
+
+<h2>정리</h2>
+
+<p>
+Frontend Fundamentals에서 말하는 좋은 프론트엔드 코드는
+결국 다음 네 가지 기준의 균형을 맞추는 것이다.
+</p>
+
+<ul>
+<li>가독성</li>
+<li>예측 가능성</li>
+<li>응집도</li>
+<li>결합도</li>
+</ul>
+
+<p>
+이 네 가지를 고려하며 컴포넌트와 구조를 설계한다면
+장기적으로 유지보수하기 쉬운 프론트엔드 코드를 만들 수 있다.
+</p>
+
+</div>
+
+</main>
+
+</body>
+</html>
