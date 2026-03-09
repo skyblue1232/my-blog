@@ -4,7 +4,7 @@ const ALL_POSTS = [
     title:'Zustand로 React 상태 관리 쉽게 하기',
     desc:'Redux보다 훨씬 간단한 상태 관리 라이브러리 Zustand의 기본 개념과 store 생성, Devtools, persist, Immer 활용 방법까지 정리했습니다.',
     tags:['React','Zustand','State'],
-    date:'2024-12-08T12:30:00',
+    date:'2024-12-08',
     url:'posts/zustand.html',
   },
   {
@@ -12,7 +12,7 @@ const ALL_POSTS = [
     title:'공용 컴포넌트 설계 방법 정리 (Frontend Fundamentals)',
     desc:'변경하기 쉬운 프론트엔드 코드를 만들기 위한 가독성, 예측 가능성, 응집도, 결합도 기준을 정리했습니다.',
     tags:['Frontend','Architecture'],
-    date:'2025-01-29T02:45:00',
+    date:'2025-01-29',
     url:'posts/frontend-fundamentals.html',
   },
   { id:2,  title:'TypeScript 타입 추론의 모든 것', desc:'제네릭, 조건부 타입, infer 키워드까지 — 타입스크립트가 타입을 추론하는 방식을 깊게 파고들었습니다.', tags:['TypeScript'], date:'2026.02.20', read:'8 min' },
