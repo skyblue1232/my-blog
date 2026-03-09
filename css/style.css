@@ -131,8 +131,8 @@ main {
     height:180px;
     border-radius:50%;
     object-fit:cover;
-    object-position:center 10%;
-    transform:scale(0.9);
+    object-position:center 20%;
+    transform:scale(0.8);
 }
 .home-greeting {
     font-size: 0.85rem;
