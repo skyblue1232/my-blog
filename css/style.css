@@ -127,7 +127,10 @@ main {
     flex-shrink:0;
 }
 .hero-profile{
+    width:200px;
+    height:200px;
     object-fit:cover;
+    border-radius:50%;
 }
 .home-greeting {
     font-size: 0.85rem;
