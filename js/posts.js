@@ -55,6 +55,13 @@ const ALL_POSTS = [
     date:'2025.03.04',
     url:'posts/use-form.html',
   },
+  {
+    id:8,
+    title: 'React 핵심 개념 정리',
+    desc: 'React의 주요 개념인 컴포넌트, JSX, Props, State, Lifecycle, Hooks 등을 간단히 설명합니다.',
+    tags: ['React', 'Frontend', 'State', 'Hooks', 'SPA'],
+    date: '2025.04.15',
+  },
 
 
 
