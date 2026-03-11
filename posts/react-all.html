@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>React 핵심 개념 정리</title>
+
+<link rel="stylesheet" href="../css/style.css"/>
+
+</head>
+
+<body>
+
+<header id="header">
+<nav>
+<div class="nav-logo" onclick="location.href='../index.html'">
+My Blog
+</div>
+</nav>
+</header>
+
+<main class="post-container">
+
+<div class="post-header">
+
+<div class="post-tags">
+<span class="tag">React</span>
+<span class="tag">Frontend</span>
+<span class="tag">State</span>
+<span class="tag">Hooks</span>
+<span class="tag">SPA</span>
+</div>
+
+<h1 class="post-title">
+React 핵심 개념 정리
+</h1>
+
+<div class="post-meta">
+<span>2025.02.11</span>
+</div>
+
+</div>
+
+
+<article class="post-content">
+
+
+<div class="post-image">
+<img src="../images/react.png" alt="React Architecture"/>
+<p class="image-caption">
+React 기반 컴포넌트 구조
+</p>
+</div>
+
+
+<h2>React란?</h2>
+
+<p>
+React는 사용자 인터페이스(UI)를 구축하기 위한 JavaScript 라이브러리입니다.
+</p>
+
+<ul>
+<li>컴포넌트 기반 UI 구조</li>
+<li>SPA(Single Page Application) 개발에 적합</li>
+<li>Virtual DOM을 통한 빠른 렌더링</li>
+<li>모듈화된 UI 구성</li>
+<li>다른 프레임워크나 프로젝트에 쉽게 통합 가능</li>
+</ul>
+
+
+<h2>라이브러리와 프레임워크의 차이</h2>
+
+<p>
+라이브러리와 프레임워크는 제어 흐름의 주도권에 따라 구분됩니다.
+</p>
+
+<ul>
+<li><strong>프레임워크</strong> : 제어 흐름을 프레임워크가 가지고 있으며 정해진 규칙을 따라야 함</li>
+<li><strong>라이브러리</strong> : 애플리케이션의 흐름을 개발자가 직접 제어함</li>
+</ul>
+
+<p>
+React는 개발자가 흐름을 제어하는 <strong>라이브러리</strong>입니다.
+</p>
+
+
+<h2>Virtual DOM</h2>
+
+<p>
+Virtual DOM은 실제 DOM의 가벼운 복사본입니다.
+</p>
+
+<ul>
+<li>UI 변경 사항을 Virtual DOM에서 먼저 계산</li>
+<li>diffing 알고리즘을 통해 변경된 부분만 찾음</li>
+<li>최소한의 DOM 조작으로 UI 업데이트 수행</li>
+</ul>
+
+<p>
+이를 통해 대규모 애플리케이션에서도 효율적인 렌더링이 가능합니다.
+</p>
+
+<div class="post-image">
+<img src="../images/react-virtual-dom.png" alt="React Virtual DOM"/>
+<p class="image-caption">
+Virtual DOM diffing 과정
+</p>
+</div>
+
+
+<h2>State와 Props</h2>
+
+<p>
+React 컴포넌트에서 데이터를 관리하는 두 가지 핵심 개념입니다.
+</p>
+
+<h3>State</h3>
+
+<ul>
+<li>컴포넌트 내부에서 관리되는 동적 데이터</li>
+<li>state가 변경되면 컴포넌트가 다시 렌더링됨</li>
+<li>state는 해당 컴포넌트 내부에서만 변경 가능</li>
+</ul>
+
+<h3>Props</h3>
+
+<ul>
+<li>부모 컴포넌트 → 자식 컴포넌트로 전달되는 데이터</li>
+<li>읽기 전용(Read-only)</li>
+<li>자식 컴포넌트에서 변경할 수 없음</li>
+</ul>
+
+
+<h2>React 생명주기</h2>
+
+<p>
+React 컴포넌트는 다음 세 가지 생명주기를 가집니다.
+</p>
+
+<ul>
+<li><strong>Mounting</strong> : 컴포넌트가 처음 DOM에 생성되는 단계</li>
+<li><strong>Updating</strong> : state나 props가 변경되어 다시 렌더링되는 단계</li>
+<li><strong>Unmounting</strong> : 컴포넌트가 DOM에서 제거되는 단계</li>
+</ul>
+
+<p>
+함수형 컴포넌트에서는 <strong>Hook</strong>을 사용하여 생명주기와 유사한 동작을 구현합니다.
+</p>
+
+
+<h2>React 상태 관리</h2>
+
+<p>
+React는 기본적으로 부모 → 자식 방향의 <strong>단방향 데이터 흐름</strong>을 사용합니다.
+</p>
+
+<p>
+컴포넌트 트리가 깊어질 경우 다음 문제가 발생할 수 있습니다.
+</p>
+
+<ul>
+<li>Props drilling</li>
+<li>데이터 흐름 파악 어려움</li>
+<li>유지보수 어려움</li>
+</ul>
+
+<p>
+이 문제를 해결하기 위해 다음과 같은 상태 관리 도구가 사용됩니다.
+</p>
+
+<ul>
+<li>Redux</li>
+<li>Zustand</li>
+<li>Recoil</li>
+<li>Context API</li>
+</ul>
+
+<div class="post-image">
+<img src="../images/react-state-flow.png" alt="React State Flow"/>
+<p class="image-caption">
+React 단방향 데이터 흐름 (Parent → Child)
+</p>
+</div>
+
+
+<h2>라우팅</h2>
+
+<p>
+라우팅은 URL에 따라 다른 페이지를 보여주는 기능입니다.
+</p>
+
+<p>
+React 자체에는 라우팅 기능이 없기 때문에
+<strong>react-router-dom</strong> 라이브러리를 사용합니다.
+</p>
+
+<pre>
+npm install react-router-dom
+</pre>
+
+
+<h2>Flux 패턴</h2>
+
+<p>
+Flux는 React 애플리케이션의 데이터 흐름을 관리하기 위한 아키텍처입니다.
+</p>
+
+<pre>
+User Action
+   ↓
+Action
+   ↓
+Dispatcher
+   ↓
+Store
+   ↓
+View
+</pre>
+
+<p>
+이 구조는 <strong>단방향 데이터 흐름</strong>을 유지합니다.
+</p>
+
+
+<h2>JSX</h2>
+
+<p>
+JSX는 JavaScript의 확장 문법으로
+JavaScript 코드 안에서 HTML과 유사한 구조로 UI를 작성할 수 있게 해줍니다.
+</p>
+
+<p>
+JSX 코드는 브라우저에서 실행되기 전에
+<strong>Babel</strong>을 통해 일반 JavaScript 코드로 변환됩니다.
+</p>
+
+
+<h2>SPA (Single Page Application)</h2>
+
+<p>
+SPA는 하나의 HTML 페이지에서 동적으로 콘텐츠를 업데이트하는 방식입니다.
+</p>
+
+<ul>
+<li>초기 로딩 이후 페이지 전체 새로고침 없음</li>
+<li>클라이언트 라우팅 사용</li>
+<li>빠른 사용자 경험 제공</li>
+</ul>
+
+
+<h2>React Hooks</h2>
+
+<p>
+React Hooks는 함수형 컴포넌트에서 상태와 생명주기 기능을 사용할 수 있게 해주는 기능입니다.
+</p>
+
+<ul>
+<li>useState</li>
+<li>useEffect</li>
+<li>useRef</li>
+<li>useMemo</li>
+<li>useCallback</li>
+<li>useContext</li>
+</ul>
+
+
+<h2>useRef</h2>
+
+<ul>
+<li>DOM 요소 직접 참조</li>
+<li>리렌더링 없이 값 유지</li>
+<li>포커스 관리</li>
+<li>애니메이션 제어</li>
+<li>서드파티 DOM 라이브러리 사용</li>
+</ul>
+
+
+<h2>메모이제이션</h2>
+
+<ul>
+<li>React.memo</li>
+<li>useMemo</li>
+<li>useCallback</li>
+</ul>
+
+
+<h2>useMemo vs useCallback</h2>
+
+<ul>
+<li><strong>useMemo</strong> : 값 메모이제이션</li>
+<li><strong>useCallback</strong> : 함수 메모이제이션</li>
+</ul>
+
+
+<h2>useState와 useEffect</h2>
+
+<h3>useState</h3>
+
+<ul>
+<li>컴포넌트 내부 상태 저장</li>
+<li>값 변경 시 컴포넌트 재렌더링</li>
+</ul>
+
+<h3>useEffect</h3>
+
+<ul>
+<li>렌더링 이후 실행되는 로직 처리</li>
+<li>API 요청</li>
+<li>이벤트 등록</li>
+<li>타이머 관리</li>
+</ul>
+
+
+<h2>정리</h2>
+
+<p>
+React는 컴포넌트 기반 구조와 Virtual DOM을 통해
+대규모 UI 애플리케이션을 효율적으로 개발할 수 있게 해주는 라이브러리입니다.
+</p>
+
+<p>
+또한 Hooks, 상태 관리 라이브러리, 다양한 스타일링 방식과 결합하여
+현대적인 프론트엔드 개발 환경을 구성할 수 있습니다.
+</p>
+
+
+</article>
+
+</main>
+
+</body>
+</html>
