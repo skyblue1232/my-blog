@@ -61,6 +61,7 @@ const ALL_POSTS = [
     desc: 'React의 주요 개념인 컴포넌트, JSX, Props, State, Lifecycle, Hooks 등을 간단히 설명합니다.',
     tags: ['React', 'Frontend', 'State', 'Hooks', 'SPA'],
     date: '2025.04.15',
+    url: 'posts/react-all.html',
   },
 
 
