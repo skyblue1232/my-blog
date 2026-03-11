@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>React Hook Form useForm 정리</title>
+
+<link rel="stylesheet" href="../css/style.css"/>
+
+</head>
+
+<body>
+
+<header id="header">
+<nav>
+<div class="nav-logo" onclick="location.href='../index.html'">
+My Blog
+</div>
+</nav>
+</header>
+
+<main class="post-container">
+
+<div class="post-header">
+
+<div class="post-tags">
+<span class="tag">React</span>
+<span class="tag">React Hook Form</span>
+<span class="tag">Form</span>
+<span class="tag">Validation</span>
+</div>
+
+<h1 class="post-title">
+React Hook Form useForm 정리 - 폼 상태 관리
+</h1>
+
+<div class="post-meta">
+<span>2025.03.04</span>
+</div>
+
+</div>
+
+
+<article class="post-content">
+
+<div class="post-image">
+  <img src="../images/react-hook-form.png" alt="React Hook Form Structure"/>
+  <p class="image-caption">
+    React Hook Form의 폼 상태 관리 구조
+  </p>
+</div>
+
+
+<h2>폼 상태 관리가 필요한 이유</h2>
+
+<p>
+React에서 여러 개의 입력값을 관리할 때 가장 단순한 방법은
+<code>useState</code>를 사용하는 것입니다.
+</p>
+
+<p>
+하지만 폼이 커질수록 상태가 많아지고 코드가 복잡해집니다.
+</p>
+
+<pre>
+const [email, setEmail] = useState("")
+const [password, setPassword] = useState("")
+const [nickname, setNickname] = useState("")
+</pre>
+
+<p>
+입력값이 많아질수록 상태 관리가 어려워지고,
+유효성 검사(validation) 로직까지 추가되면 코드가 급격히 복잡해집니다.
+</p>
+
+<p>
+또한 모든 데이터를 전역 상태(zustand 등)로 관리하면
+</p>
+
+<ul>
+<li>불필요한 메모리 사용</li>
+<li>예상하지 못한 상태 변경</li>
+<li>디버깅 난이도 증가</li>
+</ul>
+
+<p>
+같은 문제가 발생할 수 있습니다.
+</p>
+
+<p>
+이러한 문제를 해결하기 위해 많이 사용하는 라이브러리가
+<strong>React Hook Form</strong>입니다.
+</p>
+
+
+<h2>React Hook Form이란?</h2>
+
+<p>
+React Hook Form(RHF)은 React에서 폼 상태 관리와
+유효성 검사를 쉽게 처리할 수 있도록 도와주는 라이브러리입니다.
+</p>
+
+<p>
+특히 다음과 같은 장점이 있습니다.
+</p>
+
+<ul>
+<li>불필요한 리렌더링 최소화</li>
+<li>간단한 API</li>
+<li>외부 validation 라이브러리(Zod, Yup)와 연동 가능</li>
+<li>폼 상태 관리 자동화</li>
+</ul>
+
+
+<h2>useForm</h2>
+
+<p>
+<code>useForm</code>은 React Hook Form의 핵심 Hook입니다.
+폼의 상태와 유효성 검사를 관리합니다.
+</p>
+
+<pre>
+const {
+  register,
+  handleSubmit,
+  formState: { errors }
+} = useForm()
+</pre>
+
+<p>
+기본적으로 다음과 같은 기능을 제공합니다.
+</p>
+
+<ul>
+<li>폼 상태 관리</li>
+<li>입력값 추적</li>
+<li>유효성 검사</li>
+<li>에러 상태 관리</li>
+</ul>
+
+
+<h2>useForm 주요 옵션</h2>
+
+<p>
+useForm은 다양한 옵션을 제공합니다.
+</p>
+
+<ul>
+<li>mode</li>
+<li>reValidateMode</li>
+<li>defaultValues</li>
+<li>resolver</li>
+<li>shouldFocusError</li>
+<li>criteriaMode</li>
+</ul>
+
+
+<h2>reValidateMode</h2>
+
+<p>
+입력값의 유효성 검사를 언제 다시 실행할지 결정하는 옵션입니다.
+</p>
+
+<table>
+<tr>
+<th>옵션</th>
+<th>설명</th>
+</tr>
+
+<tr>
+<td>onSubmit</td>
+<td>폼 제출 시에만 검증</td>
+</tr>
+
+<tr>
+<td>onBlur</td>
+<td>input에서 포커스가 벗어날 때 검증</td>
+</tr>
+
+<tr>
+<td>onChange</td>
+<td>입력값이 변경될 때마다 검증</td>
+</tr>
+
+<tr>
+<td>onTouched</td>
+<td>처음 blur 이후 change에서 검증</td>
+</tr>
+
+<tr>
+<td>all</td>
+<td>blur와 change 모두에서 검증</td>
+</tr>
+
+</table>
+
+
+<h2>defaultValues</h2>
+
+<p>
+폼의 초기값을 설정하는 옵션입니다.
+</p>
+
+<pre>
+const form = useForm({
+  defaultValues: {
+    email: "",
+    password: ""
+  }
+})
+</pre>
+
+<p>
+폼이 처음 렌더링될 때 기본값으로 사용됩니다.
+</p>
+
+<p>
+주의할 점은 다음과 같습니다.
+</p>
+
+<ul>
+<li>undefined 값을 기본값으로 사용하지 않는 것이 좋음</li>
+<li>defaultValues는 캐싱됨</li>
+<li>초기화를 위해서는 reset API 사용</li>
+</ul>
+
+
+<h2>resolver</h2>
+
+<p>
+resolver는 외부 validation 라이브러리와 연결할 때 사용합니다.
+</p>
+
+<p>
+대표적으로 다음 라이브러리와 함께 사용됩니다.
+</p>
+
+<ul>
+<li>Zod</li>
+<li>Yup</li>
+<li>Joi</li>
+</ul>
+
+<pre>
+const form = useForm({
+  resolver: zodResolver(schema)
+})
+</pre>
+
+<p>
+resolver를 사용할 경우
+React Hook Form의 기본 validation(required 등)은
+사용하지 않는 것이 일반적입니다.
+</p>
+
+
+<h2>useController</h2>
+
+<p>
+<code>useController</code>는 React Hook Form에서
+외부 UI 라이브러리와 함께 사용할 때 유용한 Hook입니다.
+</p>
+
+<p>
+예를 들어 다음과 같은 UI 라이브러리와 함께 사용됩니다.
+</p>
+
+<ul>
+<li>MUI</li>
+<li>Ant Design</li>
+<li>Chakra UI</li>
+</ul>
+
+<p>
+입력 컴포넌트를 React Hook Form 상태와 연결해줍니다.
+</p>
+
+
+<h2>useController 주요 props</h2>
+
+<table>
+
+<tr>
+<th>props</th>
+<th>설명</th>
+</tr>
+
+<tr>
+<td>name</td>
+<td>폼 필드 이름</td>
+</tr>
+
+<tr>
+<td>control</td>
+<td>useForm에서 전달받은 control 객체</td>
+</tr>
+
+<tr>
+<td>defaultValue</td>
+<td>입력 필드 초기값</td>
+</tr>
+
+<tr>
+<td>rules</td>
+<td>유효성 검사 규칙</td>
+</tr>
+
+</table>
+
+
+<h2>useController 반환 값</h2>
+
+<p>
+useController는 다음과 같은 객체를 반환합니다.
+</p>
+
+<h3>field</h3>
+
+<ul>
+<li>onChange</li>
+<li>onBlur</li>
+<li>value</li>
+<li>name</li>
+<li>ref</li>
+</ul>
+
+<h3>fieldState</h3>
+
+<ul>
+<li>invalid</li>
+<li>isTouched</li>
+<li>isDirty</li>
+<li>error</li>
+</ul>
+
+
+<h2>formState</h2>
+
+<p>
+폼 전체 상태를 나타냅니다.
+</p>
+
+<ul>
+<li>isDirty</li>
+<li>isSubmitting</li>
+<li>isSubmitted</li>
+<li>isValid</li>
+<li>submitCount</li>
+<li>errors</li>
+</ul>
+
+
+<h2>정리</h2>
+
+<p>
+React에서 폼 상태를 관리할 때
+단순한 <code>useState</code> 방식은 규모가 커질수록 관리가 어려워집니다.
+</p>
+
+<p>
+React Hook Form을 사용하면
+</p>
+
+<ul>
+<li>폼 상태 관리 단순화</li>
+<li>유효성 검사 통합</li>
+<li>성능 최적화</li>
+</ul>
+
+<p>
+와 같은 장점을 얻을 수 있습니다.
+</p>
+
+<p>
+특히 <strong>Zod와 함께 사용하면 타입 안정성과 validation을 동시에 관리</strong>할 수 있어
+최근 React 프로젝트에서 많이 사용되는 방식입니다.
+</p>
+
+
+</article>
+
+</main>
+
+</body>
+</html>
