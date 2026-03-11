@@ -53,9 +53,10 @@ const ALL_POSTS = [
     desc:'React Hook Form의 기본 사용법과 유효성 검사, 그리고 커스텀 컴포넌트와의 통합 방법을 설명합니다.',
     tags:['React','Form','Validation', 'React Hook Form'],
     date:'2025.03.04',
-    url:'posts/use-form.html',
+    url:'posts/react-hook-form.html',
   },
-  
+
+
 
   {
     id:10,
