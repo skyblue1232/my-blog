@@ -73,5 +73,13 @@ const ALL_POSTS = [
     tags:['AWS','CloudFront','CDN','S3', 'Optimization'],
     date:'2025.08.24',
     url:'posts/cloud-front.html',
+  },
+  {
+    id: 25,
+    title: 'Design System · Storybook · 설정 패키지화로 정리한 도메인 기반 모노레포 구조',
+    desc: '중복 컴포넌트와 분산된 설정 파일 문제를 해결하기 위해 Design System, Storybook, 아이콘 자동화, Turbo 기반 코드 규칙 통합을 적용한 도메인 기반 모노레포 구조 설계 과정을 정리했습니다.',
+    tags: ['Next.js', 'React', 'Monorepo', 'DesignSystem', 'Storybook', 'Architecture'],
+    date: '2026.02.22',
+    url: 'posts/monorepo-design-system.html',
   }
 ];
