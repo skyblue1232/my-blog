@@ -364,6 +364,12 @@ main {
   margin-bottom:6px;
 }
 
+.post-content img {
+  max-width: 600px;
+  width: 100%;
+  height: auto;
+}
+
 .post-image {
 margin:40px 0;
 text-align:center;
