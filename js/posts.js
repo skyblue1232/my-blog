@@ -81,5 +81,13 @@ const ALL_POSTS = [
     tags: ['Next.js', 'React', 'Monorepo', 'DesignSystem', 'Storybook', 'Architecture'],
     date: '2026.02.22',
     url: 'posts/monorepo-design-system.html',
+  },
+  {
+    id: 26,
+    title: 'API · React Query 팩토리 패키지화로 정리한 도메인 기반 서버 상태 관리 구조',
+    desc: 'API 요청과 React Query 설정을 패키지화하여 도메인 기반 서버 상태 관리 구조를 설계한 과정을 정리했습니다.',
+    tags: ['Next.js', 'React', 'Monorepo', 'API', 'React Query', 'Architecture'],
+    date: '2026.03.10',
+    url: 'posts/query-factory.html',
   }
 ];
