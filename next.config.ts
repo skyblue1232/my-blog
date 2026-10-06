@@ -13,6 +13,8 @@ const nextConfig: NextConfig = {
       // 포트폴리오 형태였던 시기의 경로는 홈으로 보냅니다.
       { source: '/projects/:path*', destination: '/', permanent: true },
       { source: '/resume', destination: '/', permanent: true },
+      // 카테고리 이름 변경(DevOps → Cloud/Infra)
+      { source: '/category/devops', destination: '/category/cloud', permanent: true },
     ];
   },
 };

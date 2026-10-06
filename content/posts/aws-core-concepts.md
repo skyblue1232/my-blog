@@ -3,7 +3,7 @@ title: "AWS, 이름보다 선택 이유를 이해하기: 실무로 연결하는 
 description: "AWS SAA 자료를 공부하며 서비스 이름 대신 '어떤 문제를 해결하려고 이것을 고르는가'를 기준으로 실행 환경, 저장과 전달, DB, 네트워크와 권한, 장애 대응, 비동기 처리, 운영 비용을 정리한 노트입니다."
 date: 2026-10-06
 tags: ["AWS", "Cloud", "Architecture", "Infra", "S3", "CloudFront"]
-category: devops
+category: cloud
 ---
 
 AWS SAA 자료를 읽다 보면 서비스 이름이 너무 많아서 어디부터 이해해야 할지 막막해진다. 처음에는 서비스마다 정의를 외웠는데, 며칠 지나면 EC2와 ECS가, Multi-AZ와 Read Replica가 머릿속에서 섞였다.

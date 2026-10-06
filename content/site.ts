@@ -6,7 +6,7 @@ export const site = {
   shortName: 'STUDY LAB',
   tagline: '공부하고, 실험하고, 기록하는 기술 연구실',
   description:
-    '개발하며 부딪힌 문제와 실험 과정을 기록하는 기술 블로그. AI, 프론트엔드, 백엔드, DevOps, 협업에 대한 딥다이브 노트를 모읍니다.',
+    '개발하며 부딪힌 문제와 실험 과정을 기록하는 기술 블로그. AI, 프론트엔드, 백엔드, 클라우드/인프라, 협업에 대한 딥다이브 노트를 모읍니다.',
   url: 'https://my-blog-min.vercel.app',
   /** 메타데이터(작성자 표기)에만 사용합니다. 화면에는 노출하지 않습니다. */
   author: '고민균',
@@ -29,7 +29,7 @@ export const categories = [
   { slug: 'ai', label: 'AI', description: 'LLM · RAG · 모델 실험과 회고' },
   { slug: 'frontend', label: 'Frontend', description: 'React · Next.js · 상태 관리 · 아키텍처' },
   { slug: 'backend', label: 'Backend', description: 'HTTP · API · 서버와 데이터' },
-  { slug: 'devops', label: 'DevOps', description: 'AWS · CDN · 배포와 운영' },
+  { slug: 'cloud', label: 'Cloud/Infra', description: 'AWS · CDN · 배포와 운영' },
   { slug: 'career', label: 'Career', description: '협업 방식 · 일하는 법 · 성장 기록' },
 ] as const;
 

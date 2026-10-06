@@ -3,7 +3,7 @@ title: "CloudFront + S3 + ACM으로 이미지 CDN 구축하기"
 description: "S3 직접 조회로 생기던 이미지·영상 로딩 지연을 줄이기 위해 CloudFront CDN, ACM 인증서, 커스텀 도메인을 연결한 과정을 단계별로 정리했습니다."
 date: 2025-08-24
 tags: ["AWS", "CloudFront", "CDN", "S3", "Optimization"]
-category: devops
+category: cloud
 ---
 
 <figure>
