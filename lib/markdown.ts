@@ -4,6 +4,7 @@ import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeRaw from 'rehype-raw';
 import rehypeSlug from 'rehype-slug';
 import rehypeStringify from 'rehype-stringify';
+import remarkCjkFriendly from 'remark-cjk-friendly';
 import remarkGfm from 'remark-gfm';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
@@ -52,6 +53,8 @@ export async function renderMarkdown(markdown: string) {
   const file = await unified()
     .use(remarkParse)
     .use(remarkGfm)
+    // 한글 조사 바로 앞의 **"강조"**처럼 CommonMark에서 깨지는 CJK 강조를 처리합니다.
+    .use(remarkCjkFriendly)
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeRaw)
     .use(rehypeSlug)

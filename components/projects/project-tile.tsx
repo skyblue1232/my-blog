@@ -1,13 +1,19 @@
 import Link from 'next/link';
 import type { Project } from '@/content/projects';
+import { isExternal } from '@/lib/utils';
 import { ArrowUpRight } from '../ui/icons';
 import { ProjectCover } from './project-cover';
 
-/** Behance 갤러리 그리드 스타일의 보조 프로젝트 카드 */
+/** Behance 갤러리 그리드 스타일의 보조 프로젝트 카드. 회고 글이 있으면 글로, 없으면 서비스로 연결합니다. */
 export function ProjectTile({ project }: { project: Project }) {
-  const href = project.links.live ?? project.links.github ?? '#';
+  const post = project.relatedPosts?.[0];
+  const href = post ? `/blog/${post}` : (project.links.live ?? project.links.github ?? '#');
   return (
-    <Link href={href} target="_blank" rel="noopener noreferrer" className="group block">
+    <Link
+      href={href}
+      {...(isExternal(href) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      className="group block"
+    >
       <ProjectCover
         cover={project.cover}
         className="aspect-[16/10] rounded-2xl border border-line"

@@ -26,7 +26,7 @@ export function Projects() {
         {otherProjects.length > 0 && (
           <Reveal className="mt-24">
             <h3 className="mb-8 text-lg font-semibold text-fg">More Projects</h3>
-            <div className="grid gap-x-8 gap-y-12 md:grid-cols-2">
+            <div className="grid gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
               {otherProjects.map((project) => (
                 <ProjectTile key={project.slug} project={project} />
               ))}

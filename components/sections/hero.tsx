@@ -13,7 +13,7 @@ export function Hero({ postCount }: HeroProps) {
   const stats = [
     { value: `${projects.length}`, label: '팀/개인 프로젝트' },
     { value: `${postCount}`, label: '기술 아티클' },
-    { value: '2', label: '교내 수상' },
+    { value: '36/250', label: 'SSAFY AI Challenge' },
   ];
 
   return (
@@ -77,7 +77,7 @@ function ProfileCard() {
   const rows = [
     { k: 'Focus', v: 'Monorepo · Design System · Server State' },
     { k: 'Stack', v: 'Next.js · TypeScript · TanStack Query' },
-    { k: 'Now', v: 'SSAFY — 삼성 청년 SW·AI 아카데미' },
+    { k: 'Now', v: 'SSAFY 16기 Java Track' },
   ];
 
   return (

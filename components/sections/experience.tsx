@@ -1,5 +1,7 @@
+import Link from 'next/link';
 import { timeline, type TimelineItem } from '@/content/profile';
 import { cn } from '@/lib/utils';
+import { ArrowUpRight } from '../ui/icons';
 import { Container, Section, SectionHeader } from '../ui/primitives';
 import { Reveal } from '../ui/reveal';
 
@@ -7,12 +9,14 @@ const kindLabel: Record<TimelineItem['kind'], string> = {
   education: 'Education',
   training: 'Training',
   award: 'Award',
+  competition: 'Competition',
 };
 
 const kindStyle: Record<TimelineItem['kind'], string> = {
   education: 'border-sky-400/25 bg-sky-400/10 text-sky-200',
   training: 'border-accent/30 bg-accent/10 text-accent-fg',
   award: 'border-amber-300/25 bg-amber-300/10 text-amber-200',
+  competition: 'border-emerald-300/25 bg-emerald-300/10 text-emerald-200',
 };
 
 export function Experience() {
@@ -26,7 +30,16 @@ export function Experience() {
             <Reveal as="li" key={item.title} delay={i * 60} className="group grid gap-2 border-t border-line py-7 md:grid-cols-[180px_1fr_auto] md:gap-10">
               <p className="font-mono text-sm text-subtle">{item.period}</p>
               <div>
-                <h3 className="text-lg font-semibold text-fg">{item.title}</h3>
+                <h3 className="text-lg font-semibold text-fg">
+                  {item.href ? (
+                    <Link href={item.href} className="group/link inline-flex items-center gap-1.5 transition-colors hover:text-accent-fg">
+                      {item.title}
+                      <ArrowUpRight className="text-base text-subtle transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
+                    </Link>
+                  ) : (
+                    item.title
+                  )}
+                </h3>
                 <p className="mt-0.5 text-sm text-muted">{item.org}</p>
                 <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted">{item.description}</p>
               </div>

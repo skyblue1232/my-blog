@@ -228,10 +228,22 @@
 .article li::marker {
   color: var(--color-subtle);
 }
+/* 인용 블록은 콜아웃 카드로 사용합니다. 첫 굵은 글씨(예: **핵심 포인트!**)가 라벨이 됩니다. */
 .article blockquote {
-  border-left: 2px solid var(--color-accent);
-  padding: 0.25rem 0 0.25rem 1.1rem;
-  color: var(--color-muted);
+  border: 1px solid rgb(99 102 241 / 0.25);
+  border-left: 3px solid var(--color-accent);
+  border-radius: 12px;
+  background: rgb(99 102 241 / 0.07);
+  padding: 1rem 1.25rem;
+  font-size: 0.98em;
+  color: #cfd3de;
+}
+.article blockquote > * + * {
+  margin-top: 0.75em;
+}
+.article blockquote > p:first-child > strong:first-child {
+  color: var(--color-accent-fg);
+  margin-right: 0.15rem;
 }
 .article hr {
   border: 0;
