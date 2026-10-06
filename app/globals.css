@@ -1,0 +1,364 @@
+@import 'tailwindcss';
+
+/* ─────────────────────────────────────────────
+   Design tokens
+   ───────────────────────────────────────────── */
+@theme {
+  --color-bg: #0b0f19;
+  --color-surface: #0f1420;
+  --color-surface-2: #141a28;
+  --color-surface-3: #1a2131;
+  --color-line: rgb(255 255 255 / 0.07);
+  --color-line-strong: rgb(255 255 255 / 0.13);
+  --color-fg: #eceef4;
+  --color-muted: #a3a9b8;
+  --color-subtle: #7c8496;
+  --color-accent: #6366f1;
+  --color-accent-strong: #575ae6;
+  --color-accent-soft: #8b8ff8;
+  --color-accent-fg: #c7cbff;
+  --color-success: #34d399;
+
+  --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI', Roboto,
+    'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --text-display: clamp(2.5rem, 6.2vw, 4.5rem);
+  --text-display--line-height: 1.08;
+  --text-display--letter-spacing: -0.035em;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-fade-up: fade-up 0.8s var(--ease-out-expo) both;
+  --animate-pulse-dot: pulse-dot 2.4s ease-out infinite;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes pulse-dot {
+    0% {
+      box-shadow: 0 0 0 0 rgb(52 211 153 / 0.5);
+    }
+    70%,
+    100% {
+      box-shadow: 0 0 0 7px rgb(52 211 153 / 0);
+    }
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Base
+   ───────────────────────────────────────────── */
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-bg font-sans text-fg antialiased;
+    font-feature-settings: 'ss01', 'cv11';
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  ::selection {
+    background: rgb(99 102 241 / 0.35);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent-soft);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Utilities
+   ───────────────────────────────────────────── */
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+@utility text-gradient {
+  background: linear-gradient(100deg, #fff 10%, var(--color-accent-fg) 55%, var(--color-accent-soft) 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility hairline-top {
+  background-image: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.16), transparent);
+  background-size: 100% 1px;
+  background-repeat: no-repeat;
+}
+
+/* 스크롤 진입 애니메이션 (components/ui/reveal.tsx) */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.9s var(--ease-out-expo),
+    transform 0.9s var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+[data-reveal='visible'] {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 마우스를 따라오는 카드 하이라이트 (components/ui/spotlight-card.tsx) */
+.spotlight {
+  --x: 50%;
+  --y: 50%;
+}
+.spotlight::before {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s;
+  background: radial-gradient(520px circle at var(--x) var(--y), rgb(99 102 241 / 0.09), transparent 45%);
+}
+.spotlight:hover::before {
+  opacity: 1;
+}
+
+/* ─────────────────────────────────────────────
+   Article (blog post body)
+   ───────────────────────────────────────────── */
+.article {
+  --article-gap: 1.35em;
+  font-size: 1.0625rem;
+  line-height: 1.85;
+  color: #c9cdd8;
+}
+.article > * + * {
+  margin-top: var(--article-gap);
+}
+.article h2 {
+  margin-top: 3.2rem;
+  padding-top: 0.25rem;
+  font-size: 1.5rem;
+  line-height: 1.35;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-fg);
+}
+.article h3 {
+  margin-top: 2.4rem;
+  font-size: 1.2rem;
+  line-height: 1.45;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  color: var(--color-fg);
+}
+.article h2 + *,
+.article h3 + * {
+  margin-top: 0.85rem;
+}
+.article strong {
+  color: var(--color-fg);
+  font-weight: 650;
+}
+.article a {
+  color: var(--color-accent-fg);
+  text-decoration: underline;
+  text-decoration-color: rgb(139 143 248 / 0.4);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s;
+}
+.article a:hover {
+  text-decoration-color: currentColor;
+}
+.article ul,
+.article ol {
+  padding-left: 1.3rem;
+}
+.article ul {
+  list-style: disc;
+}
+.article ol {
+  list-style: decimal;
+}
+.article li {
+  padding-left: 0.25rem;
+}
+.article li + li {
+  margin-top: 0.4rem;
+}
+.article li::marker {
+  color: var(--color-subtle);
+}
+/* 인용 블록은 콜아웃 카드로 사용합니다. 첫 굵은 글씨(예: **핵심 포인트!**)가 라벨이 됩니다. */
+.article blockquote {
+  border: 1px solid rgb(99 102 241 / 0.25);
+  border-left: 3px solid var(--color-accent);
+  border-radius: 12px;
+  background: rgb(99 102 241 / 0.07);
+  padding: 1rem 1.25rem;
+  font-size: 0.98em;
+  color: #cfd3de;
+}
+.article blockquote > * + * {
+  margin-top: 0.75em;
+}
+.article blockquote > p:first-child > strong:first-child {
+  color: var(--color-accent-fg);
+  margin-right: 0.15rem;
+}
+.article hr {
+  border: 0;
+  height: 1px;
+  background: var(--color-line-strong);
+  margin: 3rem 0;
+}
+.article img {
+  border-radius: 12px;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+}
+.article figure:not([data-rehype-pretty-code-figure]) {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+.article figcaption {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--color-subtle);
+}
+
+/* inline code */
+.article :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  padding: 0.15em 0.4em;
+  border-radius: 6px;
+  background: rgb(255 255 255 / 0.06);
+  border: 1px solid var(--color-line);
+  color: #e3e5ff;
+}
+
+/* code blocks (rehype-pretty-code) */
+.article figure[data-rehype-pretty-code-figure] {
+  position: relative;
+  margin-top: 1.6rem;
+  margin-bottom: 1.6rem;
+}
+.article pre {
+  position: relative;
+  overflow-x: auto;
+  padding: 2.4rem 0 1.1rem;
+  border-radius: 12px;
+  border: 1px solid var(--color-line);
+  background: #0d121c;
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  line-height: 1.7;
+}
+.article pre::before {
+  content: attr(data-language);
+  position: absolute;
+  top: 0.7rem;
+  left: 1.1rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-subtle);
+}
+.article pre[data-language='text']::before {
+  content: '';
+}
+.article pre[data-language='text'] {
+  padding-top: 1.1rem;
+}
+.article pre > code {
+  display: grid;
+  min-width: 100%;
+}
+.article pre [data-line] {
+  padding: 0 1.25rem;
+}
+
+/* tables */
+.article .table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-line);
+  border-radius: 12px;
+}
+.article table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+.article th,
+.article td {
+  padding: 0.7rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-line);
+}
+.article th {
+  background: var(--color-surface-2);
+  color: var(--color-fg);
+  font-weight: 600;
+}
+.article tr:last-child td {
+  border-bottom: 0;
+}
+
+/* ─────────────────────────────────────────────
+   Print (resume page)
+   ───────────────────────────────────────────── */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm 14mm;
+  }
+  html,
+  body {
+    background: #fff !important;
+    color: #111 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
