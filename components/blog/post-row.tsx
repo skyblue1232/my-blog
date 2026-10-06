@@ -1,31 +1,27 @@
 import Link from 'next/link';
 import type { PostMeta } from '@/lib/posts';
 import { formatDate } from '@/lib/utils';
-import { ArrowRight } from '../ui/icons';
+import { ClearedBadge, LevelBadge } from '../game/badges';
+import { CategoryLabel } from './post-card';
 
-/** Vercel 블로그 목록처럼 날짜 · 제목 · 태그를 한 줄에 정렬한 행 */
+/** 아카이브용 한 줄 행: 날짜 · 카테고리 · 제목 · 레벨 */
 export function PostRow({ post }: { post: PostMeta }) {
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="group grid gap-2 border-b border-line py-6 transition-colors md:grid-cols-[120px_1fr_auto] md:items-baseline md:gap-8"
+      className="group grid grid-cols-[1fr_auto] items-baseline gap-x-4 gap-y-1 border-b border-line py-4 sm:grid-cols-[96px_84px_1fr_auto]"
     >
-      <time dateTime={post.date} className="font-mono text-sm text-subtle tabular-nums">
-        {formatDate(post.date)}
+      <time dateTime={post.date} className="font-mono text-[13px] tabular-nums text-subtle">
+        {formatDate(post.date).slice(5)}
       </time>
-      <div className="min-w-0">
-        <h3 className="text-[17px] font-semibold leading-snug text-fg transition-colors group-hover:text-accent-fg">
-          {post.title}
-        </h3>
-        <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-muted">{post.description}</p>
-        <p className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs text-subtle">
-          {post.tags.slice(0, 4).map((tag) => (
-            <span key={tag}>#{tag}</span>
-          ))}
-          <span className="text-subtle/70">· {post.readingMinutes}분</span>
-        </p>
-      </div>
-      <ArrowRight className="hidden text-subtle transition-transform group-hover:translate-x-1 group-hover:text-fg md:block" />
+      <CategoryLabel slug={post.category} className="hidden sm:block" />
+      <span className="col-span-2 text-[15px] font-medium leading-snug text-fg group-hover:text-accent sm:col-span-1">
+        {post.title}
+      </span>
+      <span className="hidden items-center gap-3 sm:flex">
+        <ClearedBadge slug={post.slug} />
+        <LevelBadge level={post.level} />
+      </span>
     </Link>
   );
 }

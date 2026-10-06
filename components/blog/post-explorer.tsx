@@ -1,9 +1,10 @@
 'use client';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { PostMeta } from '@/lib/posts';
 import { cn } from '@/lib/utils';
+import { LabBot } from '../pixel/sprites';
 import { Search } from '../ui/icons';
 import { PostRow } from './post-row';
 
@@ -12,100 +13,113 @@ type PostExplorerProps = {
   tags: [string, number][];
 };
 
-/** 태그(?tag=) + 키워드로 글을 필터링합니다. 태그는 URL에 반영되어 공유·뒤로가기가 가능합니다. */
+/** 아카이브: 검색어(?q=)와 태그(?tag=)로 거르고 연도별로 묶습니다. 두 값 모두 URL에 남아 공유할 수 있습니다. */
 export function PostExplorer({ posts, tags }: PostExplorerProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const query = searchParams.get('q') ?? '';
   const activeTag = searchParams.get('tag');
-  const [query, setQuery] = useState('');
+  const [text, setText] = useState(query);
 
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return posts.filter((post) => {
-      if (activeTag && !post.tags.includes(activeTag)) return false;
-      if (!q) return true;
-      return `${post.title} ${post.description} ${post.tags.join(' ')}`.toLowerCase().includes(q);
-    });
-  }, [posts, activeTag, query]);
+  // 헤더 검색에서 ?q=로 들어오면 입력값도 맞춥니다.
+  useEffect(() => setText(query), [query]);
 
-  function selectTag(tag: string | null) {
+  function setParam(key: 'q' | 'tag', value: string | null) {
     const params = new URLSearchParams(searchParams);
-    if (tag && tag !== activeTag) params.set('tag', tag);
-    else params.delete('tag');
+    if (value) params.set(key, value);
+    else params.delete(key);
     const qs = params.toString();
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   }
 
+  const filtered = useMemo(() => {
+    const q = text.trim().toLowerCase();
+    return posts.filter((post) => {
+      if (activeTag && !post.tags.includes(activeTag)) return false;
+      if (!q) return true;
+      return `${post.title} ${post.description} ${post.tags.join(' ')} ${post.category}`.toLowerCase().includes(q);
+    });
+  }, [posts, activeTag, text]);
+
+  const byYear = useMemo(() => {
+    const groups = new Map<string, PostMeta[]>();
+    for (const post of filtered) {
+      const year = post.date.slice(0, 4);
+      groups.set(year, [...(groups.get(year) ?? []), post]);
+    }
+    return [...groups.entries()];
+  }, [filtered]);
+
   return (
     <div>
       <div className="relative">
-        <Search className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-subtle" />
+        <Search className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-subtle" />
         <input
           type="search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          value={text}
+          onChange={(e) => {
+            setText(e.target.value);
+            setParam('q', e.target.value || null);
+          }}
           placeholder="제목, 내용, 태그로 검색"
           aria-label="글 검색"
-          className="h-12 w-full rounded-xl border border-line bg-surface pl-11 pr-4 text-[15px] text-fg placeholder:text-subtle transition-colors focus:border-accent/60 focus:outline-none"
+          className="h-11 w-full rounded-md border border-line bg-surface pl-10 pr-4 text-[15px] text-fg placeholder:text-subtle focus:border-accent-line focus:outline-none"
         />
       </div>
 
-      <div className="mt-5 flex flex-wrap gap-2" role="group" aria-label="태그 필터">
-        <TagButton active={!activeTag} onClick={() => selectTag(null)}>
-          전체 <span className="text-subtle">{posts.length}</span>
-        </TagButton>
+      <div className="mt-4 flex flex-wrap gap-1.5" role="group" aria-label="태그 필터">
         {tags.map(([tag, count]) => (
-          <TagButton key={tag} active={activeTag === tag} onClick={() => selectTag(tag)}>
-            {tag} <span className="text-subtle">{count}</span>
-          </TagButton>
+          <button
+            key={tag}
+            type="button"
+            aria-pressed={activeTag === tag}
+            onClick={() => setParam('tag', activeTag === tag ? null : tag)}
+            className={cn(
+              'rounded border px-2 py-0.5 text-xs transition-colors',
+              activeTag === tag
+                ? 'border-accent-line bg-accent-soft text-accent'
+                : 'border-line text-subtle hover:border-line-strong hover:text-fg',
+            )}
+          >
+            {tag} <span className="opacity-60">{count}</span>
+          </button>
         ))}
       </div>
 
-      <p className="mt-10 text-sm text-subtle" aria-live="polite">
-        {activeTag && <span className="text-fg">#{activeTag} · </span>}
-        {filtered.length}개의 글
+      <p className="mt-10 font-pixel text-[11px] uppercase tracking-wider text-subtle" aria-live="polite">
+        {filtered.length} posts found
       </p>
-      <ul className="mt-2 border-t border-line">
-        {filtered.map((post) => (
-          <li key={post.slug}>
-            <PostRow post={post} />
-          </li>
-        ))}
-      </ul>
+
+      {byYear.map(([year, list]) => (
+        <section key={year} className="mt-6">
+          <h2 className="border-b border-line-strong pb-2 font-pixel text-sm text-fg">{year}</h2>
+          <ul>
+            {list.map((post) => (
+              <li key={post.slug}>
+                <PostRow post={post} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+
       {filtered.length === 0 && (
-        <p className="py-20 text-center text-muted">
-          조건에 맞는 글이 없습니다.{' '}
+        <div className="flex flex-col items-center py-20 text-center">
+          <LabBot className="h-14 w-auto opacity-70" />
+          <p className="mt-5 text-muted">조건에 맞는 글을 찾지 못했어요.</p>
           <button
             type="button"
-            className="text-accent-fg underline underline-offset-4"
+            className="mt-3 text-sm text-accent underline underline-offset-4"
             onClick={() => {
-              setQuery('');
-              selectTag(null);
+              setText('');
+              router.replace(pathname, { scroll: false });
             }}
           >
             필터 초기화
           </button>
-        </p>
+        </div>
       )}
     </div>
-  );
-}
-
-function TagButton({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      className={cn(
-        'rounded-full border px-3 py-1 text-[13px] transition-colors',
-        active
-          ? 'border-accent/60 bg-accent/15 text-fg'
-          : 'border-line bg-white/[0.02] text-muted hover:border-line-strong hover:text-fg',
-      )}
-    >
-      {children}
-    </button>
   );
 }

@@ -1,212 +1,184 @@
 @import 'tailwindcss';
 
-/* ─────────────────────────────────────────────
-   Design tokens
-   ───────────────────────────────────────────── */
-@theme {
-  --color-bg: #0b0f19;
-  --color-surface: #0f1420;
-  --color-surface-2: #141a28;
-  --color-surface-3: #1a2131;
-  --color-line: rgb(255 255 255 / 0.07);
-  --color-line-strong: rgb(255 255 255 / 0.13);
-  --color-fg: #eceef4;
-  --color-muted: #a3a9b8;
-  --color-subtle: #7c8496;
-  --color-accent: #6366f1;
-  --color-accent-strong: #575ae6;
-  --color-accent-soft: #8b8ff8;
-  --color-accent-fg: #c7cbff;
-  --color-success: #34d399;
+/* 테마는 <html data-theme="dark|light">로 전환합니다. 기본값은 dark입니다. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
+/* ─────────────────────────────────────────────
+   Theme tokens (모노톤 + 차분한 인디고 포인트)
+   ───────────────────────────────────────────── */
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --surface-2: #f3f4f6;
+  --line: #e5e7eb;
+  --line-strong: #d1d5db;
+  --fg: #16181d;
+  --muted: #4b5160;
+  --subtle: #6b7280;
+  --accent: #3b4fd8;
+  --accent-soft: rgb(59 79 216 / 0.08);
+  --accent-line: rgb(59 79 216 / 0.28);
+  --code-bg: #f6f7f9;
+  --code-header: #eef0f3;
+  --success: #15803d;
+  /* pixel character */
+  --px-ink: #16181d;
+  --px-body: #e5e7eb;
+  --px-shade: #c4c8d0;
+  --px-accent: #3b4fd8;
+  --px-eye: #ffffff;
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #0d0e11;
+  --surface: #14161a;
+  --surface-2: #1b1e23;
+  --line: #24272e;
+  --line-strong: #30343c;
+  --fg: #e7e8eb;
+  --muted: #a3a7b0;
+  --subtle: #7d828c;
+  --accent: #8b9dff;
+  --accent-soft: rgb(139 157 255 / 0.1);
+  --accent-line: rgb(139 157 255 / 0.3);
+  --code-bg: #101216;
+  --code-header: #171a1f;
+  --success: #4ade80;
+  --px-ink: #4b515c;
+  --px-body: #d6d9df;
+  --px-shade: #9ca3af;
+  --px-accent: #8b9dff;
+  --px-eye: #0d0e11;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-line: var(--accent-line);
+  --color-success: var(--success);
+}
+
+@theme {
   --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI', Roboto,
     'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-
-  --text-display: clamp(2.5rem, 6.2vw, 4.5rem);
-  --text-display--line-height: 1.08;
-  --text-display--letter-spacing: -0.035em;
-
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-
-  --animate-fade-up: fade-up 0.8s var(--ease-out-expo) both;
-  --animate-pulse-dot: pulse-dot 2.4s ease-out infinite;
-
-  @keyframes fade-up {
-    from {
-      opacity: 0;
-      transform: translateY(14px);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-  @keyframes pulse-dot {
-    0% {
-      box-shadow: 0 0 0 0 rgb(52 211 153 / 0.5);
-    }
-    70%,
-    100% {
-      box-shadow: 0 0 0 7px rgb(52 211 153 / 0);
-    }
-  }
+  --font-pixel: var(--font-silkscreen), var(--font-geist-mono), monospace;
 }
 
 /* ─────────────────────────────────────────────
    Base
    ───────────────────────────────────────────── */
 @layer base {
-  :root {
-    color-scheme: dark;
-  }
-
   html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 5rem;
+    scroll-padding-top: 7.5rem;
     -webkit-text-size-adjust: 100%;
-    text-rendering: optimizeLegibility;
   }
 
   body {
     @apply bg-bg font-sans text-fg antialiased;
-    font-feature-settings: 'ss01', 'cv11';
     word-break: keep-all;
     overflow-wrap: break-word;
   }
 
   ::selection {
-    background: rgb(99 102 241 / 0.35);
-    color: #fff;
+    background: var(--accent-line);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-accent-soft);
-    outline-offset: 3px;
-    border-radius: 6px;
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 
-  @media (prefers-reduced-motion: reduce) {
+  @media (prefers-reduced-motion: no-preference) {
     html {
-      scroll-behavior: auto;
-    }
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
+      scroll-behavior: smooth;
     }
   }
 }
 
-/* ─────────────────────────────────────────────
-   Utilities
-   ───────────────────────────────────────────── */
-@utility bg-grid {
-  background-image:
-    linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px);
-  background-size: 56px 56px;
+/* 픽셀 요소는 안티앨리어싱 없이 또렷하게 */
+@utility pixelated {
+  image-rendering: pixelated;
+  shape-rendering: crispEdges;
 }
 
-@utility text-gradient {
-  background: linear-gradient(100deg, #fff 10%, var(--color-accent-fg) 55%, var(--color-accent-soft) 95%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-@utility hairline-top {
-  background-image: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.16), transparent);
-  background-size: 100% 1px;
-  background-repeat: no-repeat;
-}
-
-/* 스크롤 진입 애니메이션 (components/ui/reveal.tsx) */
-[data-reveal] {
-  opacity: 0;
-  transform: translateY(18px);
-  transition:
-    opacity 0.9s var(--ease-out-expo),
-    transform 0.9s var(--ease-out-expo);
-  transition-delay: var(--reveal-delay, 0ms);
-}
-[data-reveal='visible'] {
-  opacity: 1;
-  transform: none;
-}
-@media (prefers-reduced-motion: reduce) {
-  [data-reveal] {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-/* 마우스를 따라오는 카드 하이라이트 (components/ui/spotlight-card.tsx) */
-.spotlight {
-  --x: 50%;
-  --y: 50%;
-}
-.spotlight::before {
-  content: '';
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  opacity: 0;
-  transition: opacity 0.3s;
-  background: radial-gradient(520px circle at var(--x) var(--y), rgb(99 102 241 / 0.09), transparent 45%);
-}
-.spotlight:hover::before {
-  opacity: 1;
+/* 8bit 느낌의 계단형 테두리 (과하지 않게 배지·버튼에만 사용) */
+@utility pixel-border {
+  box-shadow:
+    0 -2px 0 0 var(--line-strong),
+    0 2px 0 0 var(--line-strong),
+    -2px 0 0 0 var(--line-strong),
+    2px 0 0 0 var(--line-strong);
 }
 
 /* ─────────────────────────────────────────────
-   Article (blog post body)
+   Article
    ───────────────────────────────────────────── */
 .article {
-  --article-gap: 1.35em;
   font-size: 1.0625rem;
-  line-height: 1.85;
-  color: #c9cdd8;
+  line-height: 1.9;
+  color: var(--muted);
 }
 .article > * + * {
-  margin-top: var(--article-gap);
+  margin-top: 1.4em;
+}
+.article :where(h2, h3) {
+  position: relative;
+  color: var(--fg);
+  letter-spacing: -0.02em;
+  scroll-margin-top: 7.5rem;
 }
 .article h2 {
-  margin-top: 3.2rem;
-  padding-top: 0.25rem;
+  margin-top: 3.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--line);
   font-size: 1.5rem;
   line-height: 1.35;
   font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--color-fg);
 }
 .article h3 {
-  margin-top: 2.4rem;
+  margin-top: 2.5rem;
   font-size: 1.2rem;
   line-height: 1.45;
   font-weight: 650;
-  letter-spacing: -0.015em;
-  color: var(--color-fg);
 }
-.article h2 + *,
-.article h3 + * {
-  margin-top: 0.85rem;
+.article :where(h2, h3) + * {
+  margin-top: 0.9rem;
+}
+.article .heading-anchor {
+  margin-left: 0.4rem;
+  color: var(--subtle);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.article :where(h2, h3):hover .heading-anchor,
+.article .heading-anchor:focus-visible {
+  opacity: 1;
 }
 .article strong {
-  color: var(--color-fg);
+  color: var(--fg);
   font-weight: 650;
 }
-.article a {
-  color: var(--color-accent-fg);
+.article a:not(.heading-anchor) {
+  color: var(--accent);
   text-decoration: underline;
-  text-decoration-color: rgb(139 143 248 / 0.4);
+  text-decoration-color: var(--accent-line);
   text-underline-offset: 3px;
-  transition: text-decoration-color 0.2s;
 }
-.article a:hover {
+.article a:not(.heading-anchor):hover {
   text-decoration-color: currentColor;
 }
 .article ul,
@@ -214,7 +186,7 @@
   padding-left: 1.3rem;
 }
 .article ul {
-  list-style: disc;
+  list-style: square;
 }
 .article ol {
   list-style: decimal;
@@ -226,90 +198,110 @@
   margin-top: 0.4rem;
 }
 .article li::marker {
-  color: var(--color-subtle);
-}
-/* 인용 블록은 콜아웃 카드로 사용합니다. 첫 굵은 글씨(예: **핵심 포인트!**)가 라벨이 됩니다. */
-.article blockquote {
-  border: 1px solid rgb(99 102 241 / 0.25);
-  border-left: 3px solid var(--color-accent);
-  border-radius: 12px;
-  background: rgb(99 102 241 / 0.07);
-  padding: 1rem 1.25rem;
-  font-size: 0.98em;
-  color: #cfd3de;
-}
-.article blockquote > * + * {
-  margin-top: 0.75em;
-}
-.article blockquote > p:first-child > strong:first-child {
-  color: var(--color-accent-fg);
-  margin-right: 0.15rem;
+  color: var(--subtle);
 }
 .article hr {
   border: 0;
   height: 1px;
-  background: var(--color-line-strong);
+  background: var(--line);
   margin: 3rem 0;
 }
 .article img {
-  border-radius: 12px;
-  border: 1px solid var(--color-line);
-  background: var(--color-surface);
+  border-radius: 8px;
+  border: 1px solid var(--line);
+}
+/* 다이어그램(SVG)은 다크 톤으로 그렸으므로 라이트 테마에서는 반전해 밝게 보여줍니다. */
+[data-theme='light'] .article img[src$='.svg'] {
+  filter: invert(1) hue-rotate(180deg);
+  border-color: transparent;
 }
 .article figure:not([data-rehype-pretty-code-figure]) {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  margin-top: 2.25rem;
+  margin-bottom: 2.25rem;
 }
 .article figcaption {
   margin-top: 0.75rem;
   text-align: center;
   font-size: 0.85rem;
-  color: var(--color-subtle);
+  color: var(--subtle);
+}
+
+/* 콜아웃: 인용 블록의 첫 굵은 글씨(예: **핵심 포인트!**)가 라벨이 됩니다 */
+.article blockquote {
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  background: var(--accent-soft);
+  padding: 1rem 1.25rem;
+  color: var(--muted);
+}
+.article blockquote > * + * {
+  margin-top: 0.75em;
+}
+.article blockquote > p:first-child > strong:first-child {
+  color: var(--accent);
 }
 
 /* inline code */
 .article :not(pre) > code {
   font-family: var(--font-mono);
   font-size: 0.86em;
-  padding: 0.15em 0.4em;
-  border-radius: 6px;
-  background: rgb(255 255 255 / 0.06);
-  border: 1px solid var(--color-line);
-  color: #e3e5ff;
+  padding: 0.12em 0.4em;
+  border-radius: 5px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  color: var(--fg);
 }
 
-/* code blocks (rehype-pretty-code) */
+/* code blocks (rehype-pretty-code + lib/markdown.ts의 헤더) */
 .article figure[data-rehype-pretty-code-figure] {
-  position: relative;
-  margin-top: 1.6rem;
-  margin-bottom: 1.6rem;
+  margin-top: 1.75rem;
+  margin-bottom: 1.75rem;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: var(--code-bg);
+}
+.article .code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.45rem 0.6rem 0.45rem 1rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--code-header);
+}
+.article .code-lang {
+  font-family: var(--font-pixel);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--subtle);
+}
+.article .code-copy {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  color: var(--muted);
+  background: var(--surface);
+  cursor: pointer;
+}
+.article .code-copy:hover {
+  color: var(--fg);
+  border-color: var(--subtle);
+}
+.article .code-copy[data-copied] {
+  color: var(--success);
+  border-color: var(--success);
 }
 .article pre {
-  position: relative;
   overflow-x: auto;
-  padding: 2.4rem 0 1.1rem;
-  border-radius: 12px;
-  border: 1px solid var(--color-line);
-  background: #0d121c;
+  padding: 1rem 0;
   font-family: var(--font-mono);
-  font-size: 0.84rem;
-  line-height: 1.7;
-}
-.article pre::before {
-  content: attr(data-language);
-  position: absolute;
-  top: 0.7rem;
-  left: 1.1rem;
-  font-size: 0.7rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-subtle);
-}
-.article pre[data-language='text']::before {
-  content: '';
-}
-.article pre[data-language='text'] {
-  padding-top: 1.1rem;
+  font-size: 0.85rem;
+  line-height: 1.75;
 }
 .article pre > code {
   display: grid;
@@ -318,47 +310,36 @@
 .article pre [data-line] {
   padding: 0 1.25rem;
 }
+.article pre code span {
+  color: var(--shiki-light);
+}
+[data-theme='dark'] .article pre code span {
+  color: var(--shiki-dark);
+}
 
 /* tables */
 .article .table-wrap {
   overflow-x: auto;
-  border: 1px solid var(--color-line);
-  border-radius: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
 }
 .article table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.92rem;
+  font-size: 0.93rem;
+  line-height: 1.6;
 }
 .article th,
 .article td {
   padding: 0.7rem 1rem;
   text-align: left;
-  border-bottom: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--line);
 }
 .article th {
-  background: var(--color-surface-2);
-  color: var(--color-fg);
+  background: var(--surface-2);
+  color: var(--fg);
   font-weight: 600;
 }
 .article tr:last-child td {
   border-bottom: 0;
-}
-
-/* ─────────────────────────────────────────────
-   Print (resume page)
-   ───────────────────────────────────────────── */
-@media print {
-  @page {
-    size: A4;
-    margin: 14mm 14mm;
-  }
-  html,
-  body {
-    background: #fff !important;
-    color: #111 !important;
-  }
-  .no-print {
-    display: none !important;
-  }
 }

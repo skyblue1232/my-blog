@@ -3,6 +3,7 @@ title: "API · React Query 팩토리 패키지화로 정리한 도메인 기반 
 description: "API 요청과 React Query 설정을 패키지화하여 도메인 기반 서버 상태 관리 구조를 설계한 과정을 정리했습니다."
 date: 2026-03-10
 tags: ["Next.js", "React", "Monorepo", "API", "React Query", "Architecture"]
+category: frontend
 ---
 
 ## 프로젝트를 진행하며 느낀 문제

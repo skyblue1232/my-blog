@@ -3,6 +3,7 @@ title: "React 핵심 개념 정리"
 description: "React의 주요 개념인 컴포넌트, JSX, Props, State, Lifecycle, Hooks 등을 간단히 설명합니다."
 date: 2025-04-15
 tags: ["React", "Frontend", "State", "Hooks", "SPA"]
+category: frontend
 ---
 
 <figure>

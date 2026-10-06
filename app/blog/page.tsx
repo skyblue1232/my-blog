@@ -2,32 +2,29 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { PostExplorer } from '@/components/blog/post-explorer';
 import { PostRow } from '@/components/blog/post-row';
-import { Container, Eyebrow } from '@/components/ui/primitives';
+import { Container } from '@/components/ui/primitives';
 import { getAllPosts, getAllTags } from '@/lib/posts';
 
 export const metadata: Metadata = {
-  title: 'Blog',
-  description: '프로젝트에서 마주한 문제와 설계 결정, 프론트엔드 기본기를 정리한 기술 블로그입니다.',
+  title: 'Archive',
+  description: '모든 기술 아티클을 검색하고 태그로 모아 봅니다.',
   alternates: { canonical: '/blog' },
 };
 
-export default function BlogPage() {
+export default function ArchivePage() {
   const posts = getAllPosts();
-  const tags = getAllTags();
 
   return (
-    <Container className="max-w-4xl pb-28 pt-32 sm:pt-40">
-      <Eyebrow>Blog</Eyebrow>
-      <h1 className="mt-4 text-4xl font-bold tracking-[-0.035em] text-fg sm:text-5xl">기술 아티클</h1>
-      <p className="mt-4 max-w-xl text-[17px] leading-relaxed text-muted">
-        프로젝트에서 마주한 문제와 설계 결정, 그리고 프론트엔드 기본기를 기록합니다.
-      </p>
+    <Container className="max-w-3xl pt-12 sm:pt-16">
+      <p className="font-pixel text-[11px] uppercase tracking-wider text-subtle">Archive</p>
+      <h1 className="mt-3 text-3xl font-bold tracking-[-0.03em] text-fg">모든 글</h1>
+      <p className="mt-3 text-muted">검색어와 태그로 필요한 글을 찾아보세요.</p>
 
-      <div className="mt-12">
-        {/* useSearchParams를 쓰는 필터는 Suspense 경계 안에서 렌더링하고, 폴백으로 전체 목록을 보여줍니다. */}
+      <div className="mt-10">
+        {/* useSearchParams를 쓰는 필터는 Suspense 안에서 렌더링하고, 폴백으로 전체 목록을 보여줍니다. */}
         <Suspense
           fallback={
-            <ul className="border-t border-line">
+            <ul className="mt-16">
               {posts.map((post) => (
                 <li key={post.slug}>
                   <PostRow post={post} />
@@ -36,7 +33,7 @@ export default function BlogPage() {
             </ul>
           }
         >
-          <PostExplorer posts={posts} tags={tags} />
+          <PostExplorer posts={posts} tags={getAllTags()} />
         </Suspense>
       </div>
     </Container>

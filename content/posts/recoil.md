@@ -3,6 +3,7 @@ title: "Recoil로 React 상태 관리 쉽게 하기"
 description: "Redux와 MobX 등 상태관리 라이브러리를 간단히 비교하고 Recoil의 핵심 개념인 Atom과 Selector를 이해하기 쉽게 정리했습니다."
 date: 2024-11-15
 tags: ["React", "State", "Recoil"]
+category: frontend
 ---
 
 React 애플리케이션을 개발하다 보면 여러 컴포넌트에서 같은 상태를 공유해야 하는 상황이 자주 발생합니다.

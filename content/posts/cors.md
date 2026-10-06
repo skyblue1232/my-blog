@@ -3,6 +3,7 @@ title: "CORS와 SOP 완벽 이해하기"
 description: "브라우저 보안 정책인 CORS와 SOP의 개념과 동작 방식을 쉽게 설명합니다."
 date: 2025-01-12
 tags: ["Web", "HTTP", "Security", "CORS"]
+category: backend
 ---
 
 프론트엔드 개발을 하다 보면 API 요청을 보낼 때 다음과 같은 에러를 자주 보게 됩니다.

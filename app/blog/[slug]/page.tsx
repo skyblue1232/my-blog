@@ -2,13 +2,15 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { CodeCopy } from '@/components/blog/code-copy';
-import { TableOfContents } from '@/components/blog/table-of-contents';
+import { Comments } from '@/components/blog/comments';
+import { CategoryLabel, PostCard, PostMetaLine } from '@/components/blog/post-card';
+import { MobileToc, TableOfContents } from '@/components/blog/table-of-contents';
+import { ClearedBadge, LevelBadge } from '@/components/game/badges';
+import { ReadingProgress } from '@/components/game/reading-progress';
 import { ArrowLeft, ArrowRight } from '@/components/ui/icons';
-import { Container, Tag } from '@/components/ui/primitives';
-import { projects } from '@/content/projects';
-import { site } from '@/content/site';
-import { getAdjacentPosts, getAllPosts, getPost } from '@/lib/posts';
-import { formatDate } from '@/lib/utils';
+import { Container } from '@/components/ui/primitives';
+import { getCategory, site } from '@/content/site';
+import { getAdjacentPosts, getAllPosts, getPost, getRelatedPosts } from '@/lib/posts';
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -26,14 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: post.title,
     description: post.description,
     alternates: { canonical: `/blog/${slug}` },
-    openGraph: {
-      type: 'article',
-      title: post.title,
-      description: post.description,
-      publishedTime: post.date,
-      authors: [site.name],
-      tags: post.tags,
-    },
+    openGraph: { type: 'article', title: post.title, description: post.description, publishedTime: post.date, tags: post.tags },
   };
 }
 
@@ -44,97 +39,126 @@ export default async function PostPage({ params }: Props) {
 
   const { meta, html, headings } = post;
   const { newer, older } = getAdjacentPosts(slug);
-  const relatedProject = projects.find((p) => p.relatedPosts?.includes(slug) && p.featured);
+  const related = getRelatedPosts(slug);
 
-  const articleJsonLd = {
+  const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
+    '@type': 'TechArticle',
     headline: meta.title,
     description: meta.description,
     datePublished: meta.date,
-    author: { '@type': 'Person', name: site.name, url: site.url },
     keywords: meta.tags.join(', '),
+    author: { '@type': 'Person', name: site.author },
   };
 
   return (
-    <Container className="pb-24 pt-28 sm:pt-36">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+    <>
+      <ReadingProgress slug={slug} minutes={meta.readingMinutes} targetId="post-body" />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <div className="mx-auto max-w-3xl xl:max-w-none">
-        <Link href="/blog" className="inline-flex items-center gap-2 text-sm text-subtle transition-colors hover:text-fg">
-          <ArrowLeft /> 모든 글
-        </Link>
-
-        <header className="mt-8 max-w-3xl border-b border-line pb-10">
-          <div className="flex flex-wrap gap-1.5">
-            {meta.tags.map((tag) => (
-              <Link key={tag} href={`/blog?tag=${encodeURIComponent(tag)}`}>
-                <Tag className="transition-colors hover:border-line-strong hover:text-fg">#{tag}</Tag>
+      <Container className="pt-10 sm:pt-14">
+        <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_220px] xl:gap-16">
+          <div className="mx-auto w-full min-w-0 max-w-[720px] xl:mx-0 xl:max-w-none">
+            <nav aria-label="경로" className="flex items-center gap-2 text-[13px] text-subtle">
+              <Link href="/" className="hover:text-fg">
+                Home
               </Link>
-            ))}
-          </div>
-          <h1 className="mt-5 text-3xl font-bold leading-[1.25] tracking-[-0.03em] text-fg sm:text-[42px]">{meta.title}</h1>
-          <p className="mt-5 text-[17px] leading-relaxed text-muted">{meta.description}</p>
-          <p className="mt-6 flex items-center gap-3 text-sm text-subtle">
-            <span className="font-medium text-fg/90">{site.name}</span>
-            <span aria-hidden>·</span>
-            <time dateTime={meta.date}>{formatDate(meta.date)}</time>
-            <span aria-hidden>·</span>
-            <span>{meta.readingMinutes}분 읽기</span>
-          </p>
-        </header>
+              <span aria-hidden>/</span>
+              <Link href={`/category/${meta.category}`} className="hover:text-fg">
+                {getCategory(meta.category)?.label}
+              </Link>
+            </nav>
 
-        <div className="mt-12 xl:grid xl:grid-cols-[minmax(0,48rem)_220px] xl:justify-between xl:gap-16">
-          <div className="min-w-0">
-            <article id="post-body" className="article" dangerouslySetInnerHTML={{ __html: html }} />
+            <header className="mt-6 border-b border-line pb-8">
+              <div className="flex items-center gap-4">
+                <CategoryLabel slug={meta.category} />
+                <LevelBadge level={meta.level} />
+                <ClearedBadge slug={slug} />
+              </div>
+              <h1 className="mt-4 text-[28px] font-bold leading-[1.3] tracking-[-0.03em] text-fg sm:text-[38px]">
+                {meta.title}
+              </h1>
+              <p className="mt-4 text-[17px] leading-relaxed text-muted">{meta.description}</p>
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
+                <PostMetaLine post={meta} />
+                <ul className="flex flex-wrap gap-1.5">
+                  {meta.tags.map((tag) => (
+                    <li key={tag}>
+                      <Link
+                        href={`/blog?tag=${encodeURIComponent(tag)}`}
+                        className="rounded border border-line px-1.5 py-0.5 text-xs text-subtle hover:border-line-strong hover:text-fg"
+                      >
+                        {tag}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </header>
+
+            <div className="mt-8">
+              <MobileToc headings={headings} />
+            </div>
+
+            <article id="post-body" className="article mt-8 max-w-[720px]" dangerouslySetInnerHTML={{ __html: html }} />
             <CodeCopy containerId="post-body" />
 
-            {relatedProject && (
-              <Link
-                href={`/projects/${relatedProject.slug}`}
-                className="group mt-16 flex items-center justify-between gap-6 rounded-2xl border border-line bg-surface p-6 transition-colors hover:border-line-strong"
-              >
-                <div>
-                  <p className="font-mono text-xs uppercase tracking-wider text-accent-soft">Related Project</p>
-                  <p className="mt-2 font-semibold text-fg">{relatedProject.title}</p>
-                  <p className="mt-1 text-sm text-muted">{relatedProject.subtitle}</p>
-                </div>
-                <ArrowRight className="shrink-0 text-subtle transition-transform group-hover:translate-x-1 group-hover:text-fg" />
-              </Link>
-            )}
+            <div className="mt-16 flex items-center gap-3 border-y border-line py-4 font-pixel text-[11px] uppercase tracking-wider text-subtle">
+              <span className="size-2 bg-accent" aria-hidden />
+              End of article
+              <span className="font-sans text-xs normal-case tracking-normal">· 끝까지 읽으면</span>
+              <span className="text-fg">+{meta.readingMinutes} xp</span>
+            </div>
 
-            <nav aria-label="이전/다음 글" className="mt-16 grid gap-4 border-t border-line pt-10 sm:grid-cols-2">
+            <nav aria-label="이전/다음 글" className="mt-10 grid gap-3 sm:grid-cols-2">
               {older ? (
-                <Link href={`/blog/${older.slug}`} className="group rounded-xl border border-line p-5 transition-colors hover:border-line-strong">
+                <Link href={`/blog/${older.slug}`} className="group rounded-lg border border-line p-4 hover:border-line-strong">
                   <p className="flex items-center gap-1.5 text-xs text-subtle">
                     <ArrowLeft /> 이전 글
                   </p>
-                  <p className="mt-2 font-medium leading-snug text-fg group-hover:text-accent-fg">{older.title}</p>
+                  <p className="mt-1.5 text-sm font-medium leading-snug text-fg group-hover:text-accent">{older.title}</p>
                 </Link>
               ) : (
-                <span />
+                <span className="hidden sm:block" />
               )}
               {newer && (
                 <Link
                   href={`/blog/${newer.slug}`}
-                  className="group rounded-xl border border-line p-5 text-right transition-colors hover:border-line-strong"
+                  className="group rounded-lg border border-line p-4 text-right hover:border-line-strong"
                 >
                   <p className="flex items-center justify-end gap-1.5 text-xs text-subtle">
                     다음 글 <ArrowRight />
                   </p>
-                  <p className="mt-2 font-medium leading-snug text-fg group-hover:text-accent-fg">{newer.title}</p>
+                  <p className="mt-1.5 text-sm font-medium leading-snug text-fg group-hover:text-accent">{newer.title}</p>
                 </Link>
               )}
             </nav>
+
+            {related.length > 0 && (
+              <section aria-labelledby="related" className="mt-16">
+                <h2 id="related" className="font-pixel text-xs uppercase tracking-wider text-subtle">
+                  Related posts
+                </h2>
+                <ul className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                  {related.map((p) => (
+                    <li key={p.slug}>
+                      <PostCard post={p} />
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            <Comments slug={slug} title={meta.title} />
           </div>
 
           <aside className="hidden xl:block">
-            <div className="sticky top-28">
+            <div className="sticky top-32">
               <TableOfContents headings={headings} />
             </div>
           </aside>
         </div>
-      </div>
-    </Container>
+      </Container>
+    </>
   );
 }
