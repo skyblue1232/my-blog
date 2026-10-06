@@ -3,6 +3,7 @@ title: "250팀에서 36등을 할 수 있었던 이유, 그리고 1등은 할 �
 description: "SSAFY 내부 AI Challenge(이미지 기반 객관식 VQA)에서 Qwen3.5-35B-A3B LoRA로 Private 0.97408, 250팀 중 36위를 기록하기까지의 전략과 1등과의 거리를 회고했습니다."
 date: 2026-10-02
 tags: ["회고", "AI", "VQA", "LoRA", "Fine-tuning", "SSAFY"]
+category: ai
 ---
 
 SSAFY 안에서 열린 AI Challenge가 끝났다. 이미지 한 장과 질문, 보기 네 개가 주어지면 정답을 `a / b / c / d` 중 하나로 고르는 객관식 VQA 대회였고, 평가는 Accuracy였다. 팀 **민균단**으로 참가해 Google Colab에서 실험을 돌렸다.

@@ -3,6 +3,7 @@ title: "CSR, SSR, SSG, ISR 렌더링 방식 비교"
 description: "각 렌더링 방식의 개념과 특징, 그리고 사용 사례를 정리했습니다."
 date: 2025-02-10
 tags: ["Frontend", "Web", "React", "Next.js", "Rendering"]
+category: frontend
 ---
 
 웹 애플리케이션을 개발하다 보면 다음과 같은 용어를 자주 보게 됩니다.

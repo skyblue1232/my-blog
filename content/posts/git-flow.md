@@ -3,6 +3,7 @@ title: "프로젝트를 위한 Github Flow 이해와 브랜치/라벨 전략"
 description: "Github Flow의 개념과 브랜치 전략, 그리고 프로젝트 관리에 도움이 되는 라벨 분류 방법을 정리했습니다."
 date: 2024-09-27
 tags: ["Git", "Github", "Workflow", "Branch Strategy", "Collaboration"]
+category: career
 ---
 
 <figure>

@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
       { source: '/index.html', destination: '/', permanent: true },
       { source: '/posts/:slug.html', destination: '/blog/:slug', permanent: true },
       { source: '/posts/:slug', destination: '/blog/:slug', permanent: true },
+      // 포트폴리오 형태였던 시기의 경로는 홈으로 보냅니다.
+      { source: '/projects/:path*', destination: '/', permanent: true },
+      { source: '/resume', destination: '/', permanent: true },
     ];
   },
 };

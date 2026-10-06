@@ -3,6 +3,7 @@ title: "공용 컴포넌트 설계 방법 정리 (Frontend Fundamentals)"
 description: "변경하기 쉬운 프론트엔드 코드를 만들기 위한 가독성, 예측 가능성, 응집도, 결합도 기준을 정리했습니다."
 date: 2025-01-29
 tags: ["Frontend", "Architecture"]
+category: frontend
 ---
 
 공용 컴포넌트를 설계하기 위해 **Frontend Fundamentals** 내용을 참고했다. 읽어보면서 프론트엔드 코드 구조를 고민할 때 유용하다고 느껴 따로 정리해보았다.

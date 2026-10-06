@@ -3,6 +3,7 @@ title: "Zustand로 React 상태 관리 쉽게 하기"
 description: "Redux보다 훨씬 간단한 상태 관리 라이브러리 Zustand의 기본 개념과 store 생성, Devtools, persist, Immer 활용 방법까지 정리했습니다."
 date: 2024-12-08
 tags: ["React", "Zustand", "State"]
+category: frontend
 ---
 
 React에서 상태 관리를 할 때 Redux, Context API 등 다양한 방법이 존재합니다. 그 중 **Zustand**는 매우 단순한 구조와 적은 보일러플레이트로 전역 상태를 관리할 수 있는 라이브러리입니다.

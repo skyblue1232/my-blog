@@ -1,4 +1,4 @@
-// 콘텐츠 하네스 검증: frontmatter, 이미지 경로, 프로젝트-글 연결을 확인합니다.
+// 콘텐츠 하네스 검증: frontmatter, 카테고리, 이미지 경로, featured 글을 확인합니다.
 // 실행: npm run check
 import fs from 'node:fs';
 import path from 'node:path';
@@ -9,6 +9,10 @@ const postsDir = path.join(root, 'content', 'posts');
 const publicDir = path.join(root, 'public');
 const errors = [];
 const report = (file, message) => errors.push(`${path.relative(root, file)}: ${message}`);
+
+const siteSrc = fs.readFileSync(path.join(root, 'content', 'site.ts'), 'utf8');
+const categorySlugs = new Set([...siteSrc.matchAll(/slug: '([a-z-]+)'/g)].map((m) => m[1]));
+let featuredCount = 0;
 
 const slugs = new Set();
 const titles = new Map();
@@ -23,6 +27,8 @@ for (const name of fs.readdirSync(postsDir).filter((f) => f.endsWith('.md'))) {
   const date = data.date instanceof Date ? data.date.toISOString().slice(0, 10) : String(data.date ?? '');
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) report(file, `date는 YYYY-MM-DD 형식이어야 합니다 (현재: ${date || '없음'})`);
   if (!Array.isArray(data.tags) || data.tags.length === 0) report(file, 'tags 배열이 비어 있습니다');
+  if (!categorySlugs.has(data.category)) report(file, `category는 ${[...categorySlugs].join(' | ')} 중 하나여야 합니다 (현재: ${data.category ?? '없음'})`);
+  if (data.featured) featuredCount++;
   if (titles.has(data.title)) report(file, `제목이 ${titles.get(data.title)}와 중복됩니다`);
   titles.set(data.title, name);
 
@@ -38,15 +44,7 @@ for (const name of fs.readdirSync(postsDir).filter((f) => f.endsWith('.md'))) {
   }
 }
 
-const projectsSrc = fs.readFileSync(path.join(root, 'content', 'projects.ts'), 'utf8');
-for (const [, list] of projectsSrc.matchAll(/relatedPosts:\s*\[([^\]]*)\]/g)) {
-  for (const [, slug] of list.matchAll(/'([^']+)'/g)) {
-    if (!slugs.has(slug)) report(path.join(root, 'content', 'projects.ts'), `relatedPosts의 글이 없습니다: ${slug}`);
-  }
-}
-for (const [, src] of projectsSrc.matchAll(/src:\s*'(\/[^']+)'/g)) {
-  if (!fs.existsSync(path.join(publicDir, src))) report(path.join(root, 'content', 'projects.ts'), `커버 이미지가 없습니다: ${src}`);
-}
+if (featuredCount === 0) errors.push('content/posts: featured: true인 글이 없습니다 (가장 최신 글이 대신 노출됩니다)');
 
 if (errors.length) {
   console.error(`콘텐츠 검증 실패 (${errors.length}건)\n` + errors.map((e) => `  - ${e}`).join('\n'));
