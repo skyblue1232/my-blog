@@ -4,7 +4,7 @@
 export const site = {
   name: 'Tech Study Lab',
   shortName: 'STUDY LAB',
-  tagline: '공부하고, 실험하고, 기록하는 기술 연구실(by.고민균)',
+  tagline: '공부하고, 실험하고, 기록하는 기술 연구실 (by.고민균)',
   description:
     '개발하며 부딪힌 문제와 실험 과정을 기록하는 기술 블로그. AI, 프론트엔드, 백엔드, 클라우드/인프라, 협업에 대한 딥다이브 노트를 모읍니다.',
   url: 'https://my-blog-min.vercel.app',
