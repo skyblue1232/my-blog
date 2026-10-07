@@ -1,5 +1,5 @@
 ---
-title: "단기간 개발한 웹 서비스 MVP를 다시 설계하기: Soulrip에 RAG와 하네스를 붙이며"
+title: "단기간 개발한 서비스의 MVP 다시 설계하기: Soulrip에 RAG와 하네스를 붙이며"
 description: "SSAFY에서 3일 만에 만든 서울 혼행 가이드 Soulrip을 다시 열어, 키워드 검색 챗봇을 RAG로 바꾼 이유와 평가 기반 프롬프트 개선, AI 코딩 에이전트를 위한 하네스 구조까지 정리했습니다."
 date: 2026-09-15
 tags: ["AI", "RAG", "LLM", "Harness", "FastAPI", "Vue", "SSAFY"]
