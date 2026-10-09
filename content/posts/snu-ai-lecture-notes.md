@@ -1,7 +1,7 @@
 ---
 title: "모델을 키우기 전에 문제를 다시 보기: 도메인 지식 · 적응적 센싱 · TTA · 정수 양자화 개념 노트"
 description: "서울대학교 데이터사이언스대학 김형신 교수님 강의를 듣고, 현실에서 동작하는 AI를 위한 네 가지 접근(도메인 지식 주입, 적응적 센싱, 테스트 타임 적응, 100% 정수연산 양자화)을 개념 중심으로 정리한 노트입니다."
-date: 2026-08-28
+date: 2026-09-06
 tags: ["AI", "Domain Knowledge", "Adaptive Sensing", "TTA", "Quantization", "On-device AI"]
 category: ai
 ---
